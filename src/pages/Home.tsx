@@ -95,10 +95,10 @@ console.log(groupedBySerie)
         <>
           <div id="nav">
             <p className="toggle-series-movies" onClick={showSeries}>
-              Series (${groupedBySerie.length})
+              Series ({groupedBySerie.length})
             </p>
             <p className="toggle-series-movies" onClick={showMovies}>
-              Movies (${groupedByMovies.length})
+              Movies ({groupedByMovies.length})
             </p>
           </div>
           {!moviesSelected ? (
