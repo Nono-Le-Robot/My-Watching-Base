@@ -193,8 +193,10 @@ const Container = styled.div`
     align-items: center;
     gap: 10rem;
     justify-content: center;
-    &:hover {
-      cursor: pointer;
+    p{
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
   .serie-name {
