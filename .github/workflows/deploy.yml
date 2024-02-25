@@ -7,7 +7,7 @@ name: 🚀 Deploy website on push
 
 jobs:
   web-deploy:
-    name: 🎉 Deploy front
+    name: 🎉 Deploy MWB
     runs-on: ubuntu-latest
     
     steps:
