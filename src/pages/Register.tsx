@@ -3,6 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import RegisterLogo from "../assets/register.png";
+import Config from "../utils/Config";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function Register() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
@@ -24,15 +28,49 @@ export default function Register() {
     setUserData({ ...userData, [event.target.name]: event.target.value });
   };
 
-  const handleValidation = () => {
+  const handleValidation = (email) => {
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    const { username, email, password, confirmPassword } = userData;
-    return true;
+    if(email.match(mailformat)) return true
+    else return false
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     //requete ici
+    if(userData.password !== userData.confirmPassword) return toast.error('Passwords must be the same.', {
+      position: "bottom-right",
+      autoClose: 3000,
+      pauseOnHover: false,
+      draggable: false,
+      theme: "dark",
+    });
+    if(!handleValidation(userData.email)) return toast.error('Please enter valid email.', {
+      position: "bottom-right",
+      autoClose: 3000,
+      pauseOnHover: false,
+      draggable: false,
+      theme: "dark",
+    });
+    axios.post(Config.registerUrl,{username:userData.username, email: userData.email, password: userData.password})
+    .then((result) =>{
+      console.log(result.data);
+      toast.success('Register success, redirect to login page...', {
+        position: "bottom-right",
+        autoClose: 3000,
+        pauseOnHover: false,
+        draggable: false,
+        theme: "dark",
+      });
+      setTimeout(() => {
+        navigate("/login")
+      }, 2000);
+    })
+    .catch((err)=>console.log(err))
+  
+    alert('ok')
+  
+  
+  
   };
   var userAgent;
   userAgent = navigator.userAgent.toLowerCase();
@@ -83,7 +121,7 @@ export default function Register() {
                 placeholder="Confirm Password"
                 onChange={(e) => handleChange(e)}
               />
-              <button type="submit">LOGIN</button>
+              <button onClick={handleSubmit} type="submit">REGISTER</button>
               <span>
                 Already have an account ?
                 <Link className="link" to="/login">
@@ -93,6 +131,7 @@ export default function Register() {
             </form>
           </div>
         </Container>
+        <ToastContainer />
       </>
     );
   }
@@ -121,7 +160,8 @@ const Container = styled.div`
     background-image: linear-gradient(45deg, #ff9c4b, #ffca67);
     padding: 2rem;
     border-radius: 0.4rem;
-
+    width:  95vw;
+    max-width: 500px;
     box-shadow: 2px 2px 10px #0000005a;
   }
   .register-form {
@@ -134,10 +174,10 @@ const Container = styled.div`
       border: 1px solid #ffffff;
       width: 90%;
 
-      height: 1rem;
+      height: 1.5rem;
       padding: 0.5rem 1rem;
       border-radius: 0.4rem;
-        font-size: 0.6rem;
+        font-size: 1rem;
         background-color: #2e0f0f;
 
       color: white;

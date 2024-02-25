@@ -3,18 +3,19 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import RegisterLogo from "../assets/login.png";
+import Config from "../utils/Config";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function Login() {
 
 
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
-    username: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
-  const toastOptions = {
+  let toastOptions = {
     position: "bottom-right",
     autoClose: 3000,
     pauseOnHover: false,
@@ -26,15 +27,52 @@ export default function Login() {
     setUserData({ ...userData, [event.target.name]: event.target.value });
   };
 
-  const handleValidation = () => {
+  const handleValidation = (email) => {
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    const { username, email, password, confirmPassword } = userData;
-    return true;
+    if(email.match(mailformat)) return true;
+    else return false;
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    //requete ici
+    
+    if(!handleValidation(userData.email)) {
+      toast.error("Please enter valid email.", {
+        position: "bottom-right",
+        autoClose: 3000,
+        pauseOnHover: false,
+        draggable: false,
+        theme: "dark",
+      });
+      return 
+    }
+    axios.post(Config.LoginUrl, userData)
+    .then((response) => {
+      if(!response.data.status){
+        toast.error(response.data.msg, {
+          position: "bottom-right",
+          autoClose: 3000,
+          pauseOnHover: false,
+          draggable: false,
+          theme: "dark",
+        });
+      }
+      if(response.data.iat){
+        toast.success("Login success", {
+          position: "bottom-right",
+          autoClose: 3000,
+          pauseOnHover: false,
+          draggable: false,
+          theme: "dark",
+        });
+        localStorage.setItem("userId", response.data.userId);
+        localStorage.setItem("email", response.data.email);
+        localStorage.setItem("iat", response.data.iat);
+      }
+        // window.location.href = "/#/storage";
+      
+    })
+    .catch((err) =>  console.log(err.data.message))
   };
   var userAgent;
   userAgent = navigator.userAgent.toLowerCase();
@@ -69,7 +107,7 @@ export default function Login() {
                 placeholder="Password"
                 onChange={(e) => handleChange(e)}
               />
-                            <button type="submit">REGISTER</button>
+              <button onClick={handleSubmit} type="submit">LOGIN</button>
               <span>
                 Don't have an account ?
                 <Link className="link" to="/register">
@@ -80,6 +118,8 @@ export default function Login() {
             </form>
           </div>
         </Container>
+        <ToastContainer />
+
       </>
     );
   }
@@ -107,7 +147,8 @@ const Container = styled.div`
     background-image: linear-gradient(45deg, #ff9c4b, #ffca67);
     padding: 2rem;
     border-radius: 0.4rem;
-
+    width:  95vw;
+    max-width: 500px;
     box-shadow: 2px 2px 10px #0000005a;
   }
   .register-form {
@@ -120,10 +161,10 @@ const Container = styled.div`
       border: 1px solid #ffffff;
       width: 90%;
 
-      height: 1rem;
+      height: 1.5rem;
       padding: 0.5rem 1rem;
       border-radius: 0.4rem;
-        font-size: 0.6rem;
+        font-size: 1rem;
       font-weight: bold;
       background-color: #2e0f0f;
 
