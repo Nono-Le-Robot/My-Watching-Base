@@ -6,9 +6,9 @@ import RegisterLogo from "../assets/login.png";
 import Config from "../utils/Config";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-export default function Login() {
 
 
+export default function Login({ setIsLogged }) {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
     email: "",
@@ -68,8 +68,11 @@ export default function Login() {
         localStorage.setItem("userId", response.data.userId);
         localStorage.setItem("email", response.data.email);
         localStorage.setItem("iat", response.data.iat);
+        setTimeout(() => {
+          setIsLogged(true);
+          navigate('/')
+        }, 1000);
       }
-        // window.location.href = "/#/storage";
       
     })
     .catch((err) =>  console.log(err.data.message))

@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Header from './components/Header';
+import HeaderLogged from './components/HeaderLogged'
 import Serie from "./pages/Serie";
 import Saison from "./pages/Saison";
 import Movies from "./pages/Movies";
@@ -19,6 +20,7 @@ export default function App() {
   const [groupedByEpisodes, setGroupedByEpisodes] = useState([]);
   const [moviesList, setMoviesList] = useState([])
   const [seriesList, setSeriesList] = useState([])
+  const [isLogged, setIsLogged] = useState(false);
 
 
   useEffect(() => {
@@ -49,6 +51,11 @@ export default function App() {
         })
         setGroupedByEpisodes(episodesByseries);
       })
+
+
+      const token = localStorage.getItem('iat') 
+      setIsLogged(token ? true : false);
+
       }, []);
 
       useEffect(() =>{
@@ -63,13 +70,18 @@ export default function App() {
       return (
     <DataContext.Provider value={data}>
       <BrowserRouter>
+      {isLogged &&
+        <HeaderLogged setIsLogged={setIsLogged} />
+      }
+      {!isLogged &&
         <Header />
+      }
         <Routes>
           <Route path="/serie/:serieName/:number" element={<Saison groupedByEpisodes={groupedBySerie} />} />
           <Route path="/serie/:serieName" element={<Serie groupedBySeasons={groupedBySerie} />} />
           <Route path="/movies/:movieName" element={<Movies groupedByMovies={moviesList}/>} />
           <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login setIsLogged={setIsLogged} />} />
           <Route path="/" element={<Home groupedBySerie={groupedBySerie} groupedByMovies={moviesList}/>} />
         </Routes>
       </BrowserRouter>
