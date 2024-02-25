@@ -28,7 +28,7 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-image: linear-gradient(45deg, #ff9c4b, #ffca67);
+    background-image: linear-gradient(45deg, #ff9035,#fdc54d, #ff9035);
     border-bottom: 1px solid #24150b92;
 
 }
@@ -46,6 +46,7 @@ h1{
 #logo{
     width:  50px;
     height: 50px;
+    transform: translateY(-5px);
     cursor: pointer;
 
 }
@@ -60,6 +61,7 @@ h1{
 #right-header{
     p{
         font-size: 1.5rem;
+        font-weight: bold;
         cursor: pointer;
     }
     display: flex;
