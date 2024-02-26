@@ -43,8 +43,8 @@ export default function Movies({ groupedByMovies }: MovieProps) {
               <ReactPlayer
                onClick={() => handleVideoClick(groupedByMovies[0])}
                ref={(player) => playerRefs.current[groupedByMovies.indexOf(groupedByMovies[0])] = player}
-                width={"354px"}
-                height={"199px"}
+                width={"85vw"}
+                height={"35vw"}
                 light
                 controls
                 url={filteredMovies[0].link}
@@ -76,7 +76,7 @@ const Container = styled.div`
   text-align:center;
   background-color: #ffffffb9;
   padding: 0.5rem 1rem;
-   border-radius: 0.4rem;
+  border-radius: 0.2rem;
 }
 
 #all-videos{
@@ -85,8 +85,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin-bottom: 6rem;
-  margin-top : 4rem;
+  margin-top : 3rem;
 
   gap: 4rem;
 }
@@ -136,7 +135,7 @@ border-radius: 0.3rem;
 .video{
   transition:0.2s;
   &:hover{
-    transform: scale(1.01);
+
     transition:0.2s;
   }
 }

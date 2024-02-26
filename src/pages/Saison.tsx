@@ -65,8 +65,8 @@ export default function Saison({ groupedByEpisodes }: SaisonProps) {
             <ReactPlayer
               onClick={() => handleVideoClick(episode)}
               ref={(player) => playerRefs.current[index] = player}
-              width={"354px"}
-              height={"199px"}
+              width={"85vw"}
+              height={"35vw"}
               light
               controls
               url={episode.link}
@@ -102,10 +102,10 @@ const Container = styled.div`
     font-weight: bold;
     text-align:center;
     background-color: #ffffffb9;
-    padding:  0.5rem  1rem;
-    border-radius:  0.4rem;
+    padding:  0.5rem  0rem;
+    border-radius:  0.25rem;
     max-width:  90vw;
-    width:  322px;
+    width:  100%;
     overflow: hidden;
   }
 
@@ -114,7 +114,8 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
+    /* flex-direction: column; */
+    flex-wrap: wrap;
     margin-bottom:  6rem;
     margin-top :  4rem;
     gap:  4rem;
@@ -168,7 +169,6 @@ const Container = styled.div`
   .video{
     transition:0.2s;
     &:hover{
-      transform: scale(1.01);
       transition:0.2s;
     }
   }
