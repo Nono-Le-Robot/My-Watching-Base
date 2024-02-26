@@ -53,7 +53,6 @@ export default function Register() {
     });
     axios.post(Config.registerUrl,{username:userData.username, email: userData.email, password: userData.password})
     .then((result) =>{
-      console.log(result.data);
       toast.success('Register success, redirect to login page...', {
         position: "bottom-right",
         autoClose: 3000,

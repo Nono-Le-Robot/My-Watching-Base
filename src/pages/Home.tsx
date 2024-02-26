@@ -32,12 +32,6 @@ if (a[0].serieName > b[0].serieName)
 return  1;
 return  0;
 });
-
-
-
-console.log(groupedBySerie)
-
-  // console.log(groupedBySerie)
   const [data, setData] = useState([]);
   const [images, setImages] = useState({});
   const navigate = useNavigate();

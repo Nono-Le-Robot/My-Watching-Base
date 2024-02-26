@@ -12,6 +12,7 @@ export default function Header({setIsLogged}) {
         localStorage.removeItem("email")
         localStorage.removeItem("userId")
         setIsLogged(false)
+        navigate('/')
 
     }
     return (

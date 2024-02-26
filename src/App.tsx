@@ -10,6 +10,8 @@ import HeaderLogged from './components/HeaderLogged'
 import Serie from "./pages/Serie";
 import Saison from "./pages/Saison";
 import Movies from "./pages/Movies";
+import Storage from "./pages/Storage";
+import Config from "./utils/Config";
 
 export const DataContext = React.createContext(null);
 
@@ -24,7 +26,7 @@ export default function App() {
 
 
   useEffect(() => {
-    axios.get('https://my-sharing-base.sanren.fr/backend/get-main-videos').then((response) =>{
+    axios.get(Config.getAllFiles).then((response) =>{
       setData([...response.data.files]);
       setMoviesList(response.data.files.filter(p => p.isSerie === false))
       setSeriesList(response.data.files.filter(p => p.isSerie === true))
@@ -80,9 +82,11 @@ export default function App() {
           <Route path="/serie/:serieName/:number" element={<Saison groupedByEpisodes={groupedBySerie} />} />
           <Route path="/serie/:serieName" element={<Serie groupedBySeasons={groupedBySerie} />} />
           <Route path="/movies/:movieName" element={<Movies groupedByMovies={moviesList}/>} />
+          <Route path="/storage" element={<Storage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login setIsLogged={setIsLogged} />} />
           <Route path="/" element={<Home groupedBySerie={groupedBySerie} groupedByMovies={moviesList}/>} />
+
         </Routes>
       </BrowserRouter>
     </DataContext.Provider>
