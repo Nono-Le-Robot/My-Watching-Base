@@ -149,7 +149,7 @@ return  0;
                         backgroundImage: `url(${movie.ImageTMDB})`,
                       }}
                     />
-                    <p className="serie-name">{movie.formatedMovieName}</p>
+                    <p className="serie-name">{movie.displayName}</p>
                   </div>
                 ))
               ) : (

@@ -106,7 +106,7 @@ export default function Storage() {
             )
             :
             (
-              <p className="episode">{video.formatedName.replace(/-/g, ' ')}</p>
+              <p className="episode">{video.displayName}</p>
             )
           }
 
