@@ -124,7 +124,7 @@ return  0;
                         />
                       )}
                     </div>
-                    <p className="serie-name">{serie[0].serieName}</p>
+                    <p className="serie-name">{serie[0].displayName}</p>
                   </div>
                 ))
               ) : (
