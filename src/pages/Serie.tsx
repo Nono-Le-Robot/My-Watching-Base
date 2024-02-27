@@ -13,7 +13,7 @@ export default function Serie({ groupedBySeasons }: SerieProps) {
   const flated = groupedBySeasons.flat();
   let url = window.location.pathname;
   let serieName = url.split("/")[2];
-  const filteredSerie = flated.filter((p) => p.displayName === serieName);
+  const filteredSerie = flated.filter((p) => p.formatedName === serieName);
 
   const saison = groupBy(filteredSerie, "season");
   let temp = [];
