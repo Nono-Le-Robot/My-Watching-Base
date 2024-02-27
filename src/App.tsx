@@ -61,7 +61,7 @@ export default function App() {
       }, []);
 
       useEffect(() =>{
-        const groupedList = groupBy(seriesList, "formatedName")
+        const groupedList = groupBy(seriesList, "displayName")
         let temp = []
         for (var serie in groupedList) {
           temp.push(groupedList[serie])
@@ -79,9 +79,9 @@ export default function App() {
         <Header />
       }
         <Routes>
-          <Route path="/serie/:serieName/:number" element={<Saison groupedByEpisodes={groupedBySerie} />} />
-          <Route path="/serie/:serieName" element={<Serie groupedBySeasons={groupedBySerie} />} />
-          <Route path="/movies/:movieName" element={<Movies groupedByMovies={moviesList}/>} />
+          <Route path="/serie/:displayName/:number" element={<Saison groupedByEpisodes={groupedBySerie} />} />
+          <Route path="/serie/:displayName" element={<Serie groupedBySeasons={groupedBySerie} />} />
+          <Route path="/movies/:displayName" element={<Movies groupedByMovies={moviesList}/>} />
           <Route path="/storage" element={<Storage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login setIsLogged={setIsLogged} />} />

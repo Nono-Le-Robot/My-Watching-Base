@@ -68,7 +68,7 @@ return  0;
     if (groupedBySerie.length >  0) {
       setLoading(false);
       // Utilisez directement le résultat de groupBy sans l'envelopper dans un nouveau tableau
-      setData(groupBy(groupedBySerie, 'formatedName'));
+      setData(groupBy(groupedBySerie, 'displayName'));
     }
   }, [groupedBySerie, groupedByMovies]);
 
@@ -103,7 +103,7 @@ return  0;
                   <div
                     style={{ cursor: "pointer" }}
                     key={serie[0].serieName}
-                    onClick={() => navigate(`/serie/${serie[0].formatedName}`)}
+                    onClick={() => navigate(`/serie/${serie[0].displayName}`)}
                   >
                     
                     <div
@@ -139,7 +139,7 @@ return  0;
                     style={{ cursor: "pointer" }}
                     key={movie.originalName}
                     onClick={() =>
-                      navigate(`/movies/${movie.formatedName}`)
+                      navigate(`/movies/${movie.displayName}`)
                     }
                   >
                     <div

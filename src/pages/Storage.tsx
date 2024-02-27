@@ -44,7 +44,7 @@ export default function Storage() {
   const playerRefs = useRef([]);
   let url = window.location.pathname;
   let movieName = url.split('/')[2];
-  const filteredMovies = data.filter(p => p.formatedName === movieName)
+  const filteredMovies = data.filter(p => p.displayName === movieName)
 
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [readyToPlay, setReadyToPlay] = useState(false);
