@@ -103,7 +103,7 @@ return  0;
                   <div
                     style={{ cursor: "pointer" }}
                     key={serie[0].serieName}
-                    onClick={() => navigate(`/serie/${serie[0].displayName}`)}
+                    onClick={() => navigate(`/serie/${serie[0].formatedName}`)}
                   >
                     
                     <div
@@ -124,7 +124,7 @@ return  0;
                         />
                       )}
                     </div>
-                    <p className="serie-name">{serie[0].displayName}</p>
+                    <p className="serie-name">{serie[0].formatedName}</p>
                   </div>
                 ))
               ) : (
@@ -139,7 +139,7 @@ return  0;
                     style={{ cursor: "pointer" }}
                     key={movie.originalName}
                     onClick={() =>
-                      navigate(`/movies/${movie.displayName}`)
+                      navigate(`/movies/${movie.formatedName}`)
                     }
                   >
                     <div
