@@ -10,7 +10,7 @@ export default function Movies({ groupedByMovies }: MovieProps) {
   const playerRefs = useRef([]);
   let url = window.location.pathname;
   let movieName = url.split('/')[2];
-  const filteredMovies = groupedByMovies.filter(p => p.displayName === movieName)
+  const filteredMovies = groupedByMovies.filter(p => p.formatedName === movieName)
 
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [readyToPlay, setReadyToPlay] = useState(false);
