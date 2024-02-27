@@ -19,7 +19,7 @@ export default function Saison({ groupedByEpisodes }: SaisonProps) {
   useEffect(() => {
     let season = url.split('/')[3]; // Extraire la saison de l'URL
     let filteredSerie = groupedByEpisodes.filter((element: any) => {
-      return element[0].displayName === serieName;
+      return element[0].formatedName === serieName;
     });
 
     if (filteredSerie.length >  0) {
