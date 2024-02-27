@@ -60,7 +60,7 @@ export default function Movies({ groupedByMovies }: MovieProps) {
                   overflow: "hidden"
                 }}
               />
-              <p className="episode">{filteredMovies[0] ? filteredMovies[0].formatedMovieName : "Chargement..."}</p>
+              <p className="episode">{filteredMovies[0] ? filteredMovies[0].displayName : "Chargement..."}</p>
             </div>
         </div>
        } 
