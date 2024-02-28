@@ -1,4 +1,4 @@
-const apiUrl:string = "https://my-sharing-base.sanren.fr/backend"
+const apiUrl:string = "https://my-sharing-base.sanren.fr:58443/backend"
 // const apiUrl:string = "http://localhost:5000/backend"
 
 
