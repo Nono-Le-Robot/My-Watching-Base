@@ -18,17 +18,17 @@ type HomeProps = {
 export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
   
   groupedByMovies.sort(function compare(a, b) {
-    if (a.formatedMovieName < b.formatedMovieName)
+    if (a.displayName < b.displayName)
     return -1;
-  if (a.formatedMovieName > b.formatedMovieName)
+  if (a.displayName > b.displayName)
   return  1;
 return  0;
 });
 
 groupedBySerie.sort(function compare(a, b) {
-  if (a[0].serieName < b[0].serieName)
+  if (a[0].displayName < b[0].displayName)
   return -1;
-if (a[0].serieName > b[0].serieName)
+if (a[0].displayName > b[0].displayName)
 return  1;
 return  0;
 });
