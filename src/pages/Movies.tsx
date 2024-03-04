@@ -57,7 +57,7 @@ export default function Movies({ groupedByMovies }: MovieProps) {
       })
       .catch((err) =>  console.log(err.data.message))
     }
-  }, [videoEnded])
+  }, [videoEnded,selectedVideo,readyToPlay])
   
 
   
