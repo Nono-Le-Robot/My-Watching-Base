@@ -30,6 +30,7 @@ export default function Movies({ groupedByMovies }: MovieProps) {
       const player = playerRefs.current[groupedByMovies.indexOf(selectedVideo)];
       if (player) {
         player.getInternalPlayer().play();
+
         setInterval(() => {
           const currentTime = player.getCurrentTime();
           const totalTime = player.getDuration()
@@ -40,14 +41,13 @@ export default function Movies({ groupedByMovies }: MovieProps) {
           }
           else setVideoEnded(false)
         },1000)
-
       }
     }
   }, [selectedVideo, readyToPlay]);
 
   useEffect(() => {
     const token = localStorage.getItem('iat')
-    if(token){
+    if(token && selectedVideo && readyToPlay){
       axios.post(Config.postDataVideo, {
         videoName : filteredMovies[0].name,
         watched : videoEnded,
@@ -56,7 +56,6 @@ export default function Movies({ groupedByMovies }: MovieProps) {
       .then((response) => {
       })
       .catch((err) =>  console.log(err.data.message))
-      console.log(filteredMovies[0].name)
     }
   }, [videoEnded])
   
