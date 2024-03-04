@@ -173,7 +173,7 @@ return  0;
 const Container = styled.div`
   .watched-logo{
     width: 50px;
-    position: fixed;
+    position: absolute;
     transform: translate(295px, 5px);
     z-index: 999;
   }
