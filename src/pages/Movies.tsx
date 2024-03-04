@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import ReactPlayer from 'react-player/lazy'
 import styled from 'styled-components'
+import axios from "axios"
+import Config from '../utils/Config';
 
 type MovieProps = {
   groupedByMovies: any[];
@@ -14,6 +16,7 @@ export default function Movies({ groupedByMovies }: MovieProps) {
 
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [readyToPlay, setReadyToPlay] = useState(false);
+  const [videoEnded, setVideoEnded] = useState(false);
 
 
 
@@ -27,9 +30,36 @@ export default function Movies({ groupedByMovies }: MovieProps) {
       const player = playerRefs.current[groupedByMovies.indexOf(selectedVideo)];
       if (player) {
         player.getInternalPlayer().play();
+        setInterval(() => {
+          const currentTime = player.getCurrentTime();
+          const totalTime = player.getDuration()
+          const progressPercentage = (currentTime / totalTime) * 100;
+          console.log("Temps actuel :", currentTime + ' / ' + totalTime + "   " + progressPercentage);
+          if(progressPercentage > 95){
+            setVideoEnded(true)
+          }
+          else setVideoEnded(false)
+        },1000)
+
       }
     }
   }, [selectedVideo, readyToPlay]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('iat')
+    if(token){
+      axios.post(Config.postDataVideo, {
+        videoName : filteredMovies[0].name,
+        watched : videoEnded,
+        token : token
+      })
+      .then((response) => {
+      })
+      .catch((err) =>  console.log(err.data.message))
+      console.log(filteredMovies[0].name)
+    }
+  }, [videoEnded])
+  
 
   
   return (
@@ -41,8 +71,8 @@ export default function Movies({ groupedByMovies }: MovieProps) {
               style={{ overflow: "hidden" }}
               >
               <ReactPlayer
-               onClick={() => handleVideoClick(groupedByMovies[0])}
-               ref={(player) => playerRefs.current[groupedByMovies.indexOf(groupedByMovies[0])] = player}
+                onClick={() => handleVideoClick(groupedByMovies[0])}
+                ref={(player) => playerRefs.current[groupedByMovies.indexOf(groupedByMovies[0])] = player}
                 width={"85vw"}
                 height={"35vw"}
                 light

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { SyncLoader } from "react-spinners";
 import groupBy from 'lodash.groupby'
+import watchedLogo from '../assets/watched.png'
 
 type Serie = {
   id: string;
@@ -16,6 +17,7 @@ type HomeProps = {
 };
 
 export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
+  const userId = localStorage.getItem('userId')
   
   groupedByMovies.sort(function compare(a, b) {
     if (a.displayName < b.displayName)
@@ -142,6 +144,9 @@ return  0;
                       navigate(`/movies/${movie.formatedName}`)
                     }
                   >
+                    {movie.watchedBy.includes(userId) &&
+                    <img className="watched-logo" src={watchedLogo} alt="" />
+                    }
                     <div
                       id="div-serie"
                       style={{
@@ -149,6 +154,7 @@ return  0;
                         backgroundImage: `url(${movie.ImageTMDB})`,
                       }}
                     />
+
                     <p className="serie-name">{movie.displayName}</p>
                   </div>
                 ))
@@ -165,6 +171,13 @@ return  0;
 
 // CSS
 const Container = styled.div`
+  .watched-logo{
+    width: 50px;
+    position: fixed;
+    transform: translate(295px, 5px);
+    z-index: 999;
+  }
+
   .loader {
     display: flex;
     align-items: center;
