@@ -2,6 +2,9 @@ import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player/lazy';
 import styled from 'styled-components';
+import axios from 'axios';
+import Config from '../utils/Config';
+import watchedLogo from '../assets/watched.png'
 
 type SaisonProps = {
   groupedByEpisodes: any[];
@@ -9,12 +12,16 @@ type SaisonProps = {
 
 
 export default function Saison({ groupedByEpisodes }: SaisonProps) {
+
+
   const navigate = useNavigate();
+  const userId = localStorage.getItem('userId')
   let url = window.location.pathname;
   let serieName = url.split('/')[2];
   const [data, setData] = useState([]);
 
   const playerRefs = useRef([]);
+  const [videoEnded, setVideoEnded] = useState(false);
 
   useEffect(() => {
     let season = url.split('/')[3]; // Extraire la saison de l'URL
@@ -49,9 +56,39 @@ export default function Saison({ groupedByEpisodes }: SaisonProps) {
       const player = playerRefs.current[data.indexOf(selectedVideo)];
       if (player) {
         player.getInternalPlayer().play();
+        setInterval(() => {
+          const currentTime = player.getCurrentTime();
+          const totalTime = player.getDuration()
+          const progressPercentage = (currentTime / totalTime) * 100;
+          if(progressPercentage > 95){
+            setVideoEnded(true)
+          }
+          else setVideoEnded(false)
+          console.log(currentTime)
+          console.log(totalTime)
+        },1000)
       }
     }
   }, [selectedVideo, readyToPlay, data]);
+
+
+  useEffect(() => {
+    const token = localStorage.getItem('iat')
+    if(token && selectedVideo && readyToPlay){
+      axios.post(Config.postDataVideo, {
+        videoName : selectedVideo.name,
+        watched : videoEnded,
+        token : token
+      })
+      .then((response) => {
+      })
+      .catch((err) =>  console.log(err.data.message))
+    }
+    console.log(videoEnded)
+  }, [videoEnded,selectedVideo,readyToPlay])
+
+
+  
 
   return (
     <Container>
@@ -62,11 +99,14 @@ export default function Saison({ groupedByEpisodes }: SaisonProps) {
             style={{ overflow: "hidden" }}
             key={episode.name}
           >
+            {episode.watchedBy.includes(userId) &&
+            <img className="watched-logo" src={watchedLogo} alt="" />
+            }
             <ReactPlayer
               onClick={() => handleVideoClick(episode)}
               ref={(player) => playerRefs.current[index] = player}
-              width={"85vw"}
-              height={"35vw"}
+              width={"350px"}
+              height={"175px"}
               light
               controls
               url={episode.link}
@@ -97,6 +137,13 @@ export default function Saison({ groupedByEpisodes }: SaisonProps) {
 
 // CSS
 const Container = styled.div`
+  .watched-logo{
+    width: 35px;
+    position: absolute;
+    transform: translate(135px, 5px);
+    z-index: 999;
+  }
+
   .episode{
     color: #000000;
     font-weight: bold;
@@ -104,9 +151,14 @@ const Container = styled.div`
     background-color: #ffffffb9;
     padding:  0.5rem  0rem;
     border-radius:  0.25rem;
-    max-width:  90vw;
+    max-width: 310px;
+    min-height: 30px;
     width:  100%;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
   }
 
   #all-videos{

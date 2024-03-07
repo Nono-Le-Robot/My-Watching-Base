@@ -35,7 +35,6 @@ export default function Movies({ groupedByMovies }: MovieProps) {
           const currentTime = player.getCurrentTime();
           const totalTime = player.getDuration()
           const progressPercentage = (currentTime / totalTime) * 100;
-          console.log("Temps actuel :", currentTime + ' / ' + totalTime + "   " + progressPercentage);
           if(progressPercentage > 95){
             setVideoEnded(true)
           }

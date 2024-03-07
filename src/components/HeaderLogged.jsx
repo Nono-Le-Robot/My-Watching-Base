@@ -48,11 +48,7 @@ h1{
     font-size: 2rem;
     cursor: pointer;
 }
-@media screen and (max-width: 650px) {
-    h1{
-        display: none;
-}
-}
+
 #logo{
     width:  50px;
     height: 50px;
@@ -78,5 +74,19 @@ h1{
     align-items: center;
     gap: 1.5rem;
     margin-right: 2rem;
+}
+
+@media screen and (max-width: 650px) {
+    h1{
+        display: none;
+    }
+    #right-header p {
+        font-size: 1rem;    
+    }
+    #logo{
+        width:  40px;
+        height: 40px;
+        transform: translateY(-0px);
+    }
 }
 `;
