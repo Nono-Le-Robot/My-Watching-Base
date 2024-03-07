@@ -18,7 +18,7 @@ export default function Storage() {
       const files = response.data.files
       const temp = []
       files.forEach(file => {
-        const videoType = ["video/mp4", "video/x-matroska", "video/avi", "video/mov", "video/flv"];
+        const videoType = ["video/mp4", "video/x-matroska", "video/avi", "video/mov", "video/flv", "video/webm"];
         const isVideo = videoType.includes(file.format) ? true : false
         if(isVideo){
           let phraseCapitalisee = file.formatedName.replace(/-/g, ' ');
