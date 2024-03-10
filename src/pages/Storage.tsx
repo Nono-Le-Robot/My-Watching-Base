@@ -65,11 +65,11 @@ export default function Storage() {
 
 
   const showVideos = () => {
-    setVideosSelected(!videosSelected);
+    setVideosSelected(true);
   };
 
   const showImages = () => {
-    setImagesSelected(!imagesSelected);
+    setVideosSelected(false);
   };
 
 
@@ -143,7 +143,7 @@ export default function Storage() {
 
         </div>
       ))}
-      {imagesSelected && dataImage.map((image, index) => (
+      {!videosSelected && dataImage.map((image, index) => (
          <img className="img-prev" src={image.link} alt="" />
       ))
     }
