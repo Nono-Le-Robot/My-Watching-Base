@@ -174,6 +174,13 @@ const Container = styled.div`
     }
  }
 
+ .toggle-series-movies {
+    background-color: #0000006f;
+    border-radius: 0.5rem;
+    font-size: 1.5rem;
+    padding: 1rem;
+ }
+ 
 .img-prev{
   width: 360px;
   height: auto;
