@@ -10,13 +10,16 @@ import Config from '../utils/Config';
 // { groupedByMovies }: MovieProps
 export default function Storage() {
   const [data, setData] = useState([])
+  const [dataImage, setDataImage] = useState([])
 
   useEffect(() => {
     axios.post(Config.getUserFiles, {
       token : localStorage.getItem('iat')
     }).then((response) =>{
       const files = response.data.files
+      console.log(files)
       const temp = []
+      const tempImg = []
       files.forEach(file => {
         const videoType = ["video/mp4", "video/x-matroska", "video/avi", "video/mov", "video/flv", "video/webm"];
         const isVideo = videoType.includes(file.format) ? true : false
@@ -28,8 +31,17 @@ export default function Storage() {
           file.formatedName = formatedMovieName
           temp.push(file)
         }
+        else{
+          const imageType = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
+          const isImage = imageType.includes(file.format) ? true : false;
+          if(isImage){
+            tempImg.push(file)
+          }
+        }
       });
       setData([...temp])
+      setDataImage([...tempImg])
+
     })  
     
     }, [])
@@ -113,6 +125,10 @@ export default function Storage() {
 
         </div>
       ))}
+      {dataImage.map((image, index) => (
+         <img className="watched-logo" src={image.link} alt="" />
+      ))
+    }
     </div>
     }
   </Container>
