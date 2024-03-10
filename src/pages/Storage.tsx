@@ -60,7 +60,17 @@ export default function Storage() {
 
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [readyToPlay, setReadyToPlay] = useState(false);
+  const [videosSelected, setVideosSelected] = useState(true)
+  const [imagesSelected, setImagesSelected] = useState(false)
 
+
+  const showVideos = () => {
+    setVideosSelected(!videosSelected);
+  };
+
+  const showImages = () => {
+    setImagesSelected(!imagesSelected);
+  };
 
 
   const handleVideoClick = (video) => {
@@ -80,9 +90,17 @@ export default function Storage() {
   
   return (
     <Container>
+      <div id="nav">
+            <p className="toggle-series-movies" onClick={showVideos}>
+              Series
+            </p>
+            <p className="toggle-series-movies" onClick={showImages}>
+              Movies
+            </p>
+          </div>
       {data.length > 0 &&
     <div id='all-videos'>
-      {data.map((video, index) => (
+      {videosSelected && data.map((video, index) => (
         <div
           className="video"
           style={{ overflow: "hidden" }}
@@ -125,7 +143,7 @@ export default function Storage() {
 
         </div>
       ))}
-      {dataImage.map((image, index) => (
+      {imagesSelected && dataImage.map((image, index) => (
          <img className="img-prev" src={image.link} alt="" />
       ))
     }
@@ -138,6 +156,19 @@ export default function Storage() {
 {/* <p className="episode">{filteredMovies[0] ? filteredMovies[0].formatedMovieName : "Chargement..."}</p> */}
 // CSS
 const Container = styled.div`
+
+#nav {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    gap: 10rem;
+    justify-content: center;
+    p {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+ }
 
 .img-prev{
   width: 360px;
