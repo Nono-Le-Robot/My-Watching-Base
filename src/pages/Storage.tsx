@@ -16,7 +16,11 @@ export default function Storage() {
     axios.post(Config.getUserFiles, {
       token : localStorage.getItem('iat')
     }).then((response) =>{
-      const files = response.data.files
+      const files = response.data.files.sort(function compare(a, b) {
+        if (a.displayName < b.displayName) return -1;
+        if (a.displayName > b.displayName) return 1;
+        return 0;
+      });
       console.log(files)
       const temp = []
       const tempImg = []
