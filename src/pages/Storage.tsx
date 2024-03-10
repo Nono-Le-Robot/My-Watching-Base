@@ -177,13 +177,21 @@ const Container = styled.div`
 }
 
 .episode{
-  color: #000000;
-  font-weight: bold;
-  text-align:center;
-  background-color: #ffffffb9;
-  padding: 0.5rem 1rem;
-   border-radius: 0.4rem;
-}
+    color: #000000;
+    font-weight: bold;
+    text-align:center;
+    background-color: #ffffffb9;
+    padding:  0.5rem  0rem;
+    border-radius:  0.25rem;
+    max-width: 310px;
+    min-height: 30px;
+    width:  100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
 
 #all-videos{
   text-align: center;
