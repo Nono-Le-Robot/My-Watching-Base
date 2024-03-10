@@ -126,7 +126,7 @@ export default function Storage() {
         </div>
       ))}
       {dataImage.map((image, index) => (
-         <img className="watched-logo" src={image.link} alt="" />
+         <img className="img-prev" src={image.link} alt="" />
       ))
     }
     </div>
@@ -138,6 +138,12 @@ export default function Storage() {
 {/* <p className="episode">{filteredMovies[0] ? filteredMovies[0].formatedMovieName : "Chargement..."}</p> */}
 // CSS
 const Container = styled.div`
+
+.img-prev{
+  width: 360px;
+  height: auto;
+  background-size: cover;
+}
 
 .episode{
   color: #000000;
