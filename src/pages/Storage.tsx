@@ -92,10 +92,10 @@ export default function Storage() {
     <Container>
       <div id="nav">
             <p className="toggle-series-movies" onClick={showVideos}>
-              Series
+              Videos
             </p>
             <p className="toggle-series-movies" onClick={showImages}>
-              Movies
+              Images
             </p>
           </div>
       {data.length > 0 &&
