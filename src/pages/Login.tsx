@@ -23,6 +23,16 @@ export default function Login({ setIsLogged }) {
     theme: "dark",
   };
 
+  
+  const navigateToMSB = () => {
+    window.open('https://my-sharing-base.sanren.fr', '_blank');
+   }
+   
+   const navigateToMWB = () => {
+    window.open('https://my-watching-base.sanren.fr', '_blank');
+   }
+
+
   const handleChange = (event) => {
     setUserData({ ...userData, [event.target.name]: event.target.value });
   };
@@ -90,6 +100,7 @@ export default function Login({ setIsLogged }) {
                 alt="logo de connexion representant une clé "
               />
             </div>
+            <p className="info-account"><strong className="strong" onClick={navigateToMSB}>My Sharing Base</strong> and <strong onClick={navigateToMWB} className="strong">My Watching Base</strong> account is the same.</p>
             <form
               onSubmit={(event) => handleSubmit(event)}
               className="register-form"
@@ -139,6 +150,23 @@ const Container = styled.div`
     align-items: center;
     justify-content: center;
     margin-bottom: 2rem;
+  }
+
+  .strong {
+    text-decoration: underline;
+    font-size: 1.1rem;
+
+    &:hover{
+      cursor:pointer
+    }
+  }
+
+  .info-account{
+    color: #7c6feb;
+    font-weight: bold;
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
   }
   .register-logo {
     background-color: #2e0f0f;
