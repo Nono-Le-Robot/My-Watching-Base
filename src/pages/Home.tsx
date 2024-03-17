@@ -144,6 +144,17 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
   };
 
   const handleSendAddRequest = () => {
+    if (addRequestData.name === "") {
+      toast.error("Please enter movie/serie name.", {
+        position: "bottom-right",
+        autoClose: 3000,
+        pauseOnHover: false,
+        draggable: false,
+        theme: "dark",
+      });
+      return;
+    }
+
     if (!requestInProgress) {
       setRequestInProgress(true);
       axios
@@ -288,7 +299,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                 id="request-movie-or-series"
                 onClick={handleShowAddRequestModal}
               >
-                Request a new Movie or Series
+                Request Movie or Serie
               </div>
             )}
             {showAddRequestModal && (
@@ -326,6 +337,11 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                     onClick={() => {
                       setShowAddRequestModal(false);
                       setRequestInProgress(false);
+                      setAddRequestData({
+                        name: "",
+                        year: "",
+                        info: "",
+                      });
                     }}
                   >
                     Cancel
