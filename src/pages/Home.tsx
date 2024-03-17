@@ -42,6 +42,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
   const [movieList, setMovieList] = useState([]);
   const [serieList, setSerieList] = useState([]);
   const [showAddRequestModal, setShowAddRequestModal] = useState(false);
+  const [requestInProgress, setRequestInProgress] = useState(false);
   const [addRequestData, setAddRequestData] = useState({
     name: "",
     year: "",
@@ -141,12 +142,19 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
   };
 
   const handleSendAddRequest = () => {
-    axios
-      .post(Config.requestNewMovieOrSerie, addRequestData)
-      .then((response) => {
-        setShowAddRequestModal(false);
-      })
-      .catch((err) => console.log(err.data.message));
+    if (!requestInProgress) {
+      setRequestInProgress(true);
+      axios
+        .post(Config.requestNewMovieOrSerie, addRequestData)
+        .then((response) => {
+          setRequestInProgress(false);
+          setShowAddRequestModal(false);
+        })
+        .catch((err) => {
+          console.log(err.data.message);
+          setRequestInProgress(false);
+        });
+    }
   };
 
   return (
@@ -287,7 +295,10 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
               <div id="btn-modal-new">
                 <div
                   id="cancel-btn-new-modal"
-                  onClick={() => setShowAddRequestModal(false)}
+                  onClick={() => {
+                    setShowAddRequestModal(false);
+                    setRequestInProgress(false);
+                  }}
                 >
                   Cancel
                 </div>
