@@ -390,6 +390,7 @@ const Container = styled.div`
 
   .input-modal-new,
   .input-area-modal-new {
+    width: 320px;
     text-align: center;
     padding: 1rem;
     border-radius: 0.4rem;
@@ -552,6 +553,10 @@ const Container = styled.div`
   }
 
   @media screen and (max-width: 650px) {
+    .input-modal-new,
+    .input-area-modal-new {
+      width: 220px;
+    }
     #btn-modal-new {
       /* flex-direction: column; */
       /* background-color: red; */
