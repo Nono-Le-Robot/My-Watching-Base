@@ -326,7 +326,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                     id=""
                     cols={30}
                     rows={10}
-                    placeholder="More information (optional)"
+                    placeholder="Informations (optional)"
                     onChange={(e) => handleChange(e)}
                   ></textarea>
                 </div>
