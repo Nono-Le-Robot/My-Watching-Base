@@ -381,11 +381,11 @@ const Container = styled.div`
   }
 
   #send-btn-new-modal {
-    background-color: #01350192;
+    background-color: #01770197;
   }
 
   #cancel-btn-new-modal {
-    background-color: #44010192;
+    background-color: #751d0292;
   }
 
   .input-modal-new,
