@@ -390,6 +390,7 @@ const Container = styled.div`
     border-radius: 0.4rem;
     font-size: 1.1rem;
     padding: 10px;
+    /* margin-bottom: 8rem; */
     &:hover {
       cursor: pointer;
     }
@@ -518,11 +519,5 @@ const Container = styled.div`
       border: none;
       box-shadow: none;
     }
-    html,
-    body,
-    #root {
-      overflow: hidden;
-    }
-    height: 10px;
   }
 `;

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import groupBy from "lodash.groupby";
 import { useEffect, useState } from "react";
-import watchedLogo from '../assets/watched.png'
+import watchedLogo from "../assets/watched.png";
 
 type SerieProps = {
   groupedBySeasons: any;
@@ -10,8 +10,7 @@ type SerieProps = {
 
 export default function Serie({ groupedBySeasons }: SerieProps) {
   const navigate = useNavigate();
-  const userId = localStorage.getItem('userId');
-
+  const userId = localStorage.getItem("userId");
 
   const flated = groupedBySeasons.flat();
 
@@ -38,41 +37,43 @@ export default function Serie({ groupedBySeasons }: SerieProps) {
         {temp.map((season, index) => {
           let numberWatchedEpisodes = 0; // Déplacer cette ligne ici pour recalculer le nombre d'épisodes visionnés pour chaque saison
           season.forEach((episode) => {
-            if(episode.watchedBy.includes(userId)) {
+            if (episode.watchedBy.includes(userId)) {
               numberWatchedEpisodes++;
             }
           });
 
           return (
             <p
-              style={{ cursor: "pointer", fontSize: "2rem", textAlign: "center"}}
+              style={{
+                cursor: "pointer",
+                fontSize: "2rem",
+                textAlign: "center",
+              }}
               key={season[0].season}
               onClick={() =>
                 navigate(`/serie/${serieName}/${season[0].season}`)
               }
             >
               Season {season[0].season}
-              {userId && numberWatchedEpisodes === season.length &&
-              <img className="watched-logo" src={watchedLogo} alt="" />
-              }
+              {userId && numberWatchedEpisodes === season.length && (
+                <img className="watched-logo" src={watchedLogo} alt="" />
+              )}
             </p>
           );
         })}
       </div>
     </Container>
- );
+  );
 }
 
 // CSS
 const Container = styled.div`
-
-.watched-logo{
+  .watched-logo {
     width: 40px;
     position: absolute;
     transform: translate(20px, -7px);
     z-index: 999;
   }
-
 
   p {
     cursor: pointer;
@@ -121,10 +122,12 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     height: 82vh;
     gap: 1rem;
-    margin-top: 1rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+
     p {
       color: white;
     }
