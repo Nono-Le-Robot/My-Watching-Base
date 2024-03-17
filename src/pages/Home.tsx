@@ -299,7 +299,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                 id="request-movie-or-series"
                 onClick={handleShowAddRequestModal}
               >
-                Request Movie or Serie
+                Request Movie / Serie
               </div>
             )}
             {showAddRequestModal && (
