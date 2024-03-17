@@ -103,6 +103,16 @@ export default function Saison({ groupedByEpisodes }: SaisonProps) {
             {episode.watchedBy.includes(userId) && (
               <img className="watched-logo" src={watchedLogo} alt="" />
             )}
+            {episode.size > 1500000000 && (
+              <p className="episode">
+                {episode
+                  ? `Large file detected (${convertBytesToGB(
+                      episode.size
+                    )}), Loading may take time... 
+                `
+                  : "Loading..."}
+              </p>
+            )}
             <ReactPlayer
               onClick={() => handleVideoClick(episode)}
               ref={(player) => (playerRefs.current[index] = player)}
@@ -129,16 +139,6 @@ export default function Saison({ groupedByEpisodes }: SaisonProps) {
             <p className="episode">
               {episode.episode} - {episode.episodeNameTMDB}
             </p>
-            {episode.size > 1500000000 && (
-              <p className="episode">
-                {episode
-                  ? `Large file detected (${convertBytesToGB(
-                      episode.size
-                    )}), Loading may take time... 
-                `
-                  : "Loading..."}
-              </p>
-            )}
           </div>
         ))}
       </div>

@@ -71,6 +71,16 @@ export default function Movies({ groupedByMovies }: MovieProps) {
       {groupedByMovies.length > 0 && (
         <div id="all-videos">
           <div className="video" style={{ overflow: "hidden" }}>
+            {filteredMovies[0].size > 1500000000 && (
+              <p className="episode">
+                {filteredMovies[0]
+                  ? `Large file detected (${convertBytesToGB(
+                      filteredMovies[0].size
+                    )}), Loading may take time... 
+                `
+                  : "Loading..."}
+              </p>
+            )}
             <ReactPlayer
               onClick={() => handleVideoClick(groupedByMovies[0])}
               ref={(player) =>
@@ -98,16 +108,6 @@ export default function Movies({ groupedByMovies }: MovieProps) {
             <p className="episode">
               {filteredMovies[0] ? filteredMovies[0].displayName : "Loading..."}
             </p>
-            {filteredMovies[0].size > 1500000000 && (
-              <p className="episode">
-                {filteredMovies[0]
-                  ? `Large file detected (${convertBytesToGB(
-                      filteredMovies[0].size
-                    )}), Loading may take time... 
-                `
-                  : "Loading..."}
-              </p>
-            )}
           </div>
         </div>
       )}
