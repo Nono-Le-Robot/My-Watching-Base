@@ -6,6 +6,8 @@ import groupBy from "lodash.groupby";
 import watchedLogo from "../assets/watched.png";
 import axios from "axios";
 import Config from "../utils/Config";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Movie = {
   id: string;
@@ -149,168 +151,185 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
         .then((response) => {
           setRequestInProgress(false);
           setShowAddRequestModal(false);
+          toast.success("Request sent with success !", {
+            position: "bottom-right",
+            autoClose: 3000,
+            pauseOnHover: false,
+            draggable: false,
+            theme: "dark",
+          });
         })
         .catch((err) => {
           console.log(err.data.message);
           setRequestInProgress(false);
+          toast.error("Error, please try later...", {
+            position: "bottom-right",
+            autoClose: 3000,
+            pauseOnHover: false,
+            draggable: false,
+            theme: "dark",
+          });
         });
     }
   };
 
   return (
-    <Container>
-      {loading ? (
-        <div className="loader">
-          <SyncLoader color={"#36D7B7"} loading={loading} size={15} />
-        </div>
-      ) : (
-        <>
-          {!showAddRequestModal && (
-            <>
-              <div id="nav">
-                <p className="toggle-series-movies" onClick={showSeries}>
-                  Series ({groupedBySerie.length})
-                </p>
-                <p className="toggle-series-movies" onClick={showMovies}>
-                  Movies ({groupedByMovies.length})
-                </p>
-              </div>
+    <>
+      <Container>
+        {loading ? (
+          <div className="loader">
+            <SyncLoader color={"#36D7B7"} loading={loading} size={15} />
+          </div>
+        ) : (
+          <>
+            {!showAddRequestModal && (
+              <>
+                <div id="nav">
+                  <p className="toggle-series-movies" onClick={showSeries}>
+                    Series ({groupedBySerie.length})
+                  </p>
+                  <p className="toggle-series-movies" onClick={showMovies}>
+                    Movies ({groupedByMovies.length})
+                  </p>
+                </div>
 
-              <input
-                type="text"
-                placeholder="Search for a movie..."
-                value={searchTerm}
-                onChange={(event) => setSearchTerm(event.target.value)}
-                className="input-search"
-              />
+                <input
+                  type="text"
+                  placeholder="Search for a movie..."
+                  value={searchTerm}
+                  onChange={(event) => setSearchTerm(event.target.value)}
+                  className="input-search"
+                />
 
-              {!moviesSelected ? (
-                <div id="all-series-films">
-                  {groupedBySerie ? (
-                    serieList.map((serie) => (
-                      <div
-                        style={{ cursor: "pointer" }}
-                        key={serie[0].serieName}
-                        onClick={() =>
-                          navigate(`/serie/${serie[0].formatedName}`)
-                        }
-                      >
+                {!moviesSelected ? (
+                  <div id="all-series-films">
+                    {groupedBySerie ? (
+                      serieList.map((serie) => (
                         <div
-                          id="div-serie"
-                          style={{
-                            ...styleImgLoader,
-                            backgroundImage: `url(${
-                              serie[0].ImageTMDB || "placeholder-loader-url"
-                            })`,
-                          }}
+                          style={{ cursor: "pointer" }}
+                          key={serie[0].serieName}
+                          onClick={() =>
+                            navigate(`/serie/${serie[0].formatedName}`)
+                          }
                         >
-                          {images[serie.id] === null && (
-                            <SyncLoader
-                              color={"#36D7B7"}
-                              style={{ margin: "auto" }}
-                              loading={true}
-                              size={15}
+                          <div
+                            id="div-serie"
+                            style={{
+                              ...styleImgLoader,
+                              backgroundImage: `url(${
+                                serie[0].ImageTMDB || "placeholder-loader-url"
+                              })`,
+                            }}
+                          >
+                            {images[serie.id] === null && (
+                              <SyncLoader
+                                color={"#36D7B7"}
+                                style={{ margin: "auto" }}
+                                loading={true}
+                                size={15}
+                              />
+                            )}
+                          </div>
+                          <p className="serie-name">{serie[0].displayName}</p>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="loader">Loading Series...</div>
+                    )}
+                  </div>
+                ) : (
+                  <div id="all-series-films">
+                    {groupedByMovies ? (
+                      movieList.map((movie) => (
+                        <div
+                          style={{ cursor: "pointer" }}
+                          key={movie.originalName}
+                          onClick={() =>
+                            navigate(`/movies/${movie.formatedName}`)
+                          }
+                        >
+                          {movie.watchedBy.includes(userId) && (
+                            <img
+                              className="watched-logo"
+                              src={watchedLogo}
+                              alt=""
                             />
                           )}
-                        </div>
-                        <p className="serie-name">{serie[0].displayName}</p>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="loader">Loading Series...</div>
-                  )}
-                </div>
-              ) : (
-                <div id="all-series-films">
-                  {groupedByMovies ? (
-                    movieList.map((movie) => (
-                      <div
-                        style={{ cursor: "pointer" }}
-                        key={movie.originalName}
-                        onClick={() =>
-                          navigate(`/movies/${movie.formatedName}`)
-                        }
-                      >
-                        {movie.watchedBy.includes(userId) && (
-                          <img
-                            className="watched-logo"
-                            src={watchedLogo}
-                            alt=""
+                          <div
+                            id="div-serie"
+                            style={{
+                              ...styleImg,
+                              backgroundImage: `url(${movie.ImageTMDB})`,
+                            }}
                           />
-                        )}
-                        <div
-                          id="div-serie"
-                          style={{
-                            ...styleImg,
-                            backgroundImage: `url(${movie.ImageTMDB})`,
-                          }}
-                        />
-                        <p className="serie-name">{movie.displayName}</p>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="loader">Loading Movies...</div>
-                  )}
-                </div>
-              )}
-            </>
-          )}
-          {!showAddRequestModal && (
-            <div
-              id="request-movie-or-series"
-              onClick={handleShowAddRequestModal}
-            >
-              Request a new Movie or Series
-            </div>
-          )}
-          {showAddRequestModal && (
-            <div id="request-new-modal">
-              <div id="inputs-modal-new">
-                <input
-                  name="name"
-                  className="input-modal-new"
-                  type="text"
-                  placeholder="Name"
-                  onChange={(e) => handleChange(e)}
-                ></input>
-                <input
-                  name="year"
-                  className="input-modal-new"
-                  type="text"
-                  placeholder="Year (optional)"
-                  onChange={(e) => handleChange(e)}
-                ></input>
-
-                <textarea
-                  name="info"
-                  className="input-area-modal-new"
-                  id=""
-                  cols={30}
-                  rows={10}
-                  placeholder="More information (optional)"
-                  onChange={(e) => handleChange(e)}
-                ></textarea>
+                          <p className="serie-name">{movie.displayName}</p>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="loader">Loading Movies...</div>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+            {!showAddRequestModal && (
+              <div
+                id="request-movie-or-series"
+                onClick={handleShowAddRequestModal}
+              >
+                Request a new Movie or Series
               </div>
+            )}
+            {showAddRequestModal && (
+              <div id="request-new-modal">
+                <div id="inputs-modal-new">
+                  <input
+                    name="name"
+                    className="input-modal-new"
+                    type="text"
+                    placeholder="Name"
+                    onChange={(e) => handleChange(e)}
+                  ></input>
+                  <input
+                    name="year"
+                    className="input-modal-new"
+                    type="text"
+                    placeholder="Year (optional)"
+                    onChange={(e) => handleChange(e)}
+                  ></input>
 
-              <div id="btn-modal-new">
-                <div
-                  id="cancel-btn-new-modal"
-                  onClick={() => {
-                    setShowAddRequestModal(false);
-                    setRequestInProgress(false);
-                  }}
-                >
-                  Cancel
+                  <textarea
+                    name="info"
+                    className="input-area-modal-new"
+                    id=""
+                    cols={30}
+                    rows={10}
+                    placeholder="More information (optional)"
+                    onChange={(e) => handleChange(e)}
+                  ></textarea>
                 </div>
-                <div id="send-btn-new-modal" onClick={handleSendAddRequest}>
-                  Send Request
+
+                <div id="btn-modal-new">
+                  <div
+                    id="cancel-btn-new-modal"
+                    onClick={() => {
+                      setShowAddRequestModal(false);
+                      setRequestInProgress(false);
+                    }}
+                  >
+                    Cancel
+                  </div>
+                  <div id="send-btn-new-modal" onClick={handleSendAddRequest}>
+                    Send Request
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </>
-      )}
-    </Container>
+            )}
+          </>
+        )}
+      </Container>
+      <ToastContainer />
+    </>
   );
 }
 
