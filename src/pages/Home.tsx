@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { SyncLoader } from "react-spinners";
 import groupBy from "lodash.groupby";
 import watchedLogo from "../assets/watched.png";
+import axios from "axios";
+import Config from "../utils/Config";
 
 type Movie = {
   id: string;
@@ -39,6 +41,12 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
   const [loading, setLoading] = useState(true);
   const [movieList, setMovieList] = useState([]);
   const [serieList, setSerieList] = useState([]);
+  const [showAddRequestModal, setShowAddRequestModal] = useState(false);
+  const [addRequestData, setAddRequestData] = useState({
+    name: "",
+    year: "",
+    info: "",
+  });
 
   const styleImg = {
     width: "350px",
@@ -121,6 +129,26 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
     setMoviesSelected(true);
   };
 
+  const handleShowAddRequestModal = () => {
+    setShowAddRequestModal(true);
+  };
+
+  const handleChange = (event) => {
+    setAddRequestData({
+      ...addRequestData,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleSendAddRequest = () => {
+    axios
+      .post(Config.requestNewMovieOrSerie, addRequestData)
+      .then((response) => {
+        setShowAddRequestModal(false);
+      })
+      .catch((err) => console.log(err.data.message));
+  };
+
   return (
     <Container>
       {loading ? (
@@ -129,82 +157,144 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
         </div>
       ) : (
         <>
-          <div id="nav">
-            <p className="toggle-series-movies" onClick={showSeries}>
-              Series ({groupedBySerie.length})
-            </p>
-            <p className="toggle-series-movies" onClick={showMovies}>
-              Movies ({groupedByMovies.length})
-            </p>
-          </div>
+          {!showAddRequestModal && (
+            <>
+              <div id="nav">
+                <p className="toggle-series-movies" onClick={showSeries}>
+                  Series ({groupedBySerie.length})
+                </p>
+                <p className="toggle-series-movies" onClick={showMovies}>
+                  Movies ({groupedByMovies.length})
+                </p>
+              </div>
 
-          <input
-            type="text"
-            placeholder="Search for a movie..."
-            value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
-            className="input-search"
-          />
+              <input
+                type="text"
+                placeholder="Search for a movie..."
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                className="input-search"
+              />
 
-          {!moviesSelected ? (
-            <div id="all-series-films">
-              {groupedBySerie ? (
-                serieList.map((serie) => (
-                  <div
-                    style={{ cursor: "pointer" }}
-                    key={serie[0].serieName}
-                    onClick={() => navigate(`/serie/${serie[0].formatedName}`)}
-                  >
-                    <div
-                      id="div-serie"
-                      style={{
-                        ...styleImgLoader,
-                        backgroundImage: `url(${
-                          serie[0].ImageTMDB || "placeholder-loader-url"
-                        })`,
-                      }}
-                    >
-                      {images[serie.id] === null && (
-                        <SyncLoader
-                          color={"#36D7B7"}
-                          style={{ margin: "auto" }}
-                          loading={true}
-                          size={15}
+              {!moviesSelected ? (
+                <div id="all-series-films">
+                  {groupedBySerie ? (
+                    serieList.map((serie) => (
+                      <div
+                        style={{ cursor: "pointer" }}
+                        key={serie[0].serieName}
+                        onClick={() =>
+                          navigate(`/serie/${serie[0].formatedName}`)
+                        }
+                      >
+                        <div
+                          id="div-serie"
+                          style={{
+                            ...styleImgLoader,
+                            backgroundImage: `url(${
+                              serie[0].ImageTMDB || "placeholder-loader-url"
+                            })`,
+                          }}
+                        >
+                          {images[serie.id] === null && (
+                            <SyncLoader
+                              color={"#36D7B7"}
+                              style={{ margin: "auto" }}
+                              loading={true}
+                              size={15}
+                            />
+                          )}
+                        </div>
+                        <p className="serie-name">{serie[0].displayName}</p>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="loader">Loading Series...</div>
+                  )}
+                </div>
+              ) : (
+                <div id="all-series-films">
+                  {groupedByMovies ? (
+                    movieList.map((movie) => (
+                      <div
+                        style={{ cursor: "pointer" }}
+                        key={movie.originalName}
+                        onClick={() =>
+                          navigate(`/movies/${movie.formatedName}`)
+                        }
+                      >
+                        {movie.watchedBy.includes(userId) && (
+                          <img
+                            className="watched-logo"
+                            src={watchedLogo}
+                            alt=""
+                          />
+                        )}
+                        <div
+                          id="div-serie"
+                          style={{
+                            ...styleImg,
+                            backgroundImage: `url(${movie.ImageTMDB})`,
+                          }}
                         />
-                      )}
-                    </div>
-                    <p className="serie-name">{serie[0].displayName}</p>
-                  </div>
-                ))
-              ) : (
-                <div className="loader">Loading Series...</div>
+                        <p className="serie-name">{movie.displayName}</p>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="loader">Loading Movies...</div>
+                  )}
+                </div>
               )}
+            </>
+          )}
+          {!showAddRequestModal && (
+            <div
+              id="request-movie-or-series"
+              onClick={handleShowAddRequestModal}
+            >
+              Request a new Movie or Series
             </div>
-          ) : (
-            <div id="all-series-films">
-              {groupedByMovies ? (
-                movieList.map((movie) => (
-                  <div
-                    style={{ cursor: "pointer" }}
-                    key={movie.originalName}
-                    onClick={() => navigate(`/movies/${movie.formatedName}`)}
-                  >
-                    {movie.watchedBy.includes(userId) && (
-                      <img className="watched-logo" src={watchedLogo} alt="" />
-                    )}
-                    <div
-                      id="div-serie"
-                      style={{
-                        ...styleImg,
-                        backgroundImage: `url(${movie.ImageTMDB})`,
-                      }}
-                    />
-                    <p className="serie-name">{movie.displayName}</p>
-                  </div>
-                ))
-              ) : (
-                <div className="loader">Loading Movies...</div>
-              )}
+          )}
+          {showAddRequestModal && (
+            <div id="request-new-modal">
+              <div id="inputs-modal-new">
+                <input
+                  name="name"
+                  className="input-modal-new"
+                  type="text"
+                  placeholder="Name"
+                  onChange={(e) => handleChange(e)}
+                ></input>
+                <input
+                  name="year"
+                  className="input-modal-new"
+                  type="text"
+                  placeholder="Year (optional)"
+                  onChange={(e) => handleChange(e)}
+                ></input>
+
+                <textarea
+                  name="info"
+                  className="input-area-modal-new"
+                  id=""
+                  cols={30}
+                  rows={10}
+                  placeholder="More information (optional)"
+                  onChange={(e) => handleChange(e)}
+                ></textarea>
+              </div>
+
+              <div id="btn-modal-new">
+                <div
+                  id="cancel-btn-new-modal"
+                  onClick={() => setShowAddRequestModal(false)}
+                >
+                  Cancel
+                </div>
+                <div id="send-btn-new-modal" onClick={handleSendAddRequest}>
+                  Send Request
+                </div>
+              </div>
             </div>
           )}
         </>
@@ -214,6 +304,97 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
 }
 
 const Container = styled.div`
+  #send-btn-new-modal,
+  #cancel-btn-new-modal {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+    width: 150px;
+    height: 50px;
+    border: 1px solid black;
+    border-radius: 0.4rem;
+    font-size: 1rem;
+    padding: 5px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  #send-btn-new-modal {
+    background-color: #01350192;
+  }
+
+  #cancel-btn-new-modal {
+    background-color: #44010192;
+  }
+
+  .input-modal-new,
+  .input-area-modal-new {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 0.4rem;
+    border: 1px solid black;
+    color: white;
+    background-color: #0000006f;
+    &::placeholder {
+      color: #ffffff;
+      opacity: 1; /* Firefox */
+    }
+  }
+  #btn-modal-new {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
+  #inputs-modal-new {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  #request-new-modal {
+    background-image: linear-gradient(45deg, #5f0128, rgb(129, 3, 13));
+    border: 1px solid black;
+    box-shadow: 0px 0px 50px #0000002f;
+
+    padding: 4rem;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 55vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+    border-radius: 0.5rem;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  #request-movie-or-series {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #00000094;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 300px;
+    height: 50px;
+    border-radius: 0.4rem;
+    font-size: 1.1rem;
+    padding: 10px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
   .input-search {
     width: 250px;
     display: flex;
@@ -310,5 +491,38 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     text-align: center;
+  }
+
+  @media screen and (max-width: 650px) {
+    #btn-modal-new {
+      /* flex-direction: column; */
+      /* background-color: red; */
+      /* flex-direction: column-reverse; */
+      gap: 1rem;
+    }
+
+    #send-btn-new-modal,
+    #cancel-btn-new-modal {
+      font-size: 0.8rem;
+      padding: 0.5rem;
+      width: 100px;
+      height: 40px;
+    }
+
+    #request-new-modal {
+      background-image: linear-gradient(
+        45deg,
+        rgba(129, 3, 13, 0),
+        rgba(129, 3, 13, 0)
+      );
+      border: none;
+      box-shadow: none;
+    }
+    html,
+    body,
+    #root {
+      overflow: hidden;
+    }
+    height: 10px;
   }
 `;
