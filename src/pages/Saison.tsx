@@ -11,6 +11,15 @@ type SaisonProps = {
 };
 
 export default function Saison({ groupedByEpisodes }: SaisonProps) {
+  function convertBytesToGB(bytes) {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const dm = 2; // Nombre de décimales
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+  }
+
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
   let url = window.location.pathname;
@@ -120,6 +129,16 @@ export default function Saison({ groupedByEpisodes }: SaisonProps) {
             <p className="episode">
               {episode.episode} - {episode.episodeNameTMDB}
             </p>
+            {episode.size > 1500000000 && (
+              <p className="episode">
+                {episode
+                  ? `Large file detected (${convertBytesToGB(
+                      episode.size
+                    )}), Loading may take time... 
+                `
+                  : "Loading..."}
+              </p>
+            )}
           </div>
         ))}
       </div>

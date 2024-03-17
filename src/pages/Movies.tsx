@@ -9,6 +9,15 @@ type MovieProps = {
 };
 
 export default function Movies({ groupedByMovies }: MovieProps) {
+  function convertBytesToGB(bytes) {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const dm = 2; // Nombre de décimales
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+  }
+
   const playerRefs = useRef([]);
   let url = window.location.pathname;
   let movieName = url.split("/")[2];
@@ -87,10 +96,18 @@ export default function Movies({ groupedByMovies }: MovieProps) {
               }}
             />
             <p className="episode">
-              {filteredMovies[0]
-                ? filteredMovies[0].displayName
-                : "Chargement..."}
+              {filteredMovies[0] ? filteredMovies[0].displayName : "Loading..."}
             </p>
+            {filteredMovies[0].size > 1500000000 && (
+              <p className="episode">
+                {filteredMovies[0]
+                  ? `Large file detected (${convertBytesToGB(
+                      filteredMovies[0].size
+                    )}), Loading may take time... 
+                `
+                  : "Loading..."}
+              </p>
+            )}
           </div>
         </div>
       )}
