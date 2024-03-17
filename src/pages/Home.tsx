@@ -382,7 +382,7 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #00000094;
+    background-color: #0000006f;
     margin-top: 40px;
     margin-bottom: 40px;
     width: 300px;
