@@ -62,7 +62,7 @@ export default function Movies({ groupedByMovies }: MovieProps) {
           token: token,
         })
         .then((response) => {})
-        .catch((err) => console.log(err.data.message));
+        .catch((err) => console.log(err.data));
     }
   }, [videoEnded, selectedVideo, readyToPlay]);
 

@@ -86,7 +86,7 @@ export default function Saison({ groupedByEpisodes }: SaisonProps) {
           token: token,
         })
         .then((response) => {})
-        .catch((err) => console.log(err.data.message));
+        .catch((err) => console.log(err.data));
     }
     console.log(videoEnded);
   }, [videoEnded, selectedVideo, readyToPlay]);

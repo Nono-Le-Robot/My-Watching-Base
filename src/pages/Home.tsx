@@ -177,7 +177,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
           });
         })
         .catch((err) => {
-          console.log(err.data.message);
+          console.log(err.data);
           setRequestInProgress(false);
           setAddRequestData({
             name: "",
