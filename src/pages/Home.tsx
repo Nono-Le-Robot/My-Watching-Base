@@ -306,10 +306,10 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
               <div id="request-new-modal">
                 <div id="inputs-modal-new">
                   <input
-                    name="Movie name"
+                    name="name"
                     className="input-modal-new"
                     type="text"
-                    placeholder="Name"
+                    placeholder="Movie name"
                     onChange={(e) => handleChange(e)}
                   ></input>
                   <input
