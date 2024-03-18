@@ -306,7 +306,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
               <div id="request-new-modal">
                 <div id="inputs-modal-new">
                   <input
-                    name="name"
+                    name="Movie name"
                     className="input-modal-new"
                     type="text"
                     placeholder="Name"
@@ -316,7 +316,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                     name="year"
                     className="input-modal-new"
                     type="text"
-                    placeholder="Year (optional)"
+                    placeholder="Year of production (optional)"
                     onChange={(e) => handleChange(e)}
                   ></input>
 
