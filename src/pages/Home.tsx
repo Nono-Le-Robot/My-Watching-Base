@@ -382,7 +382,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                   <div className="list-item-show-hide">
                     {requestQueue.map((item) => (
                       <li
-                        style={{ marginBottom: "0.2rem", marginTop: "0.2rem" }}
+                        style={{ marginBottom: "0.7rem", marginTop: "0.7rem" }}
                       >
                         {item.name} ==== {statusMapping[item.__v] || item.__v}
                       </li>
@@ -401,7 +401,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                   <div className="list-item-show-hide">
                     {requestRejected.map((rejected) => (
                       <li
-                        style={{ marginBottom: "0.2rem", marginTop: "0.2rem" }}
+                        style={{ marginBottom: "0.7rem", marginTop: "0.7rem" }}
                       >
                         {rejected.name} ==== {rejected.details}
                       </li>
@@ -555,7 +555,7 @@ const Container = styled.div`
     width: auto;
     height: auto;
     margin-top: 10vh;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     border-radius: 0.5rem;
     z-index: 2;
     display: flex;
