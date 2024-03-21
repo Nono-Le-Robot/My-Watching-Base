@@ -336,6 +336,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
             {showChangeNameModal && (
               <div id="modal-change-name">
                 <input
+                  autoComplete="nope"
                   id="input-change-image"
                   type="text"
                   name=""
@@ -343,6 +344,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                   onChange={(event) => handleChangeImage(event.target.value)}
                 ></input>
                 <input
+                  autoComplete="nope"
                   id="input-change-name"
                   type="text"
                   name=""
@@ -377,6 +379,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                 </div>
 
                 <input
+                  autoComplete="nope"
                   type="text"
                   placeholder="Search for a movie..."
                   value={searchTerm}
@@ -497,6 +500,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                     sufficiently precise will not be processed.
                   </p>
                   <input
+                    autoComplete="nope"
                     name="name"
                     className="input-modal-new"
                     type="text"
@@ -504,6 +508,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                     onChange={(e) => handleChange(e)}
                   ></input>
                   <input
+                    autoComplete="nope"
                     name="year"
                     className="input-modal-new"
                     type="text"
@@ -513,6 +518,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
 
                   <textarea
                     name="info"
+                    autoComplete="nope"
                     className="input-area-modal-new"
                     id=""
                     cols={30}
