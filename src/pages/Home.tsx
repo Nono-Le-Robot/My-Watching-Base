@@ -371,26 +371,6 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                   ></textarea>
                 </div>
 
-                <div id="btn-modal-new">
-                  <div
-                    id="cancel-btn-new-modal"
-                    onClick={() => {
-                      setShowAddRequestModal(false);
-                      setRequestInProgress(false);
-                      setAddRequestData({
-                        name: "",
-                        year: "",
-                        info: "",
-                        token: userToken,
-                      });
-                    }}
-                  >
-                    Cancel
-                  </div>
-                  <div id="send-btn-new-modal" onClick={handleSendAddRequest}>
-                    Send Request
-                  </div>
-                </div>
                 <div
                   id="show-queue-btn"
                   onClick={() => setShowQueue(!showQueue)}
@@ -416,6 +396,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                 >
                   Show/hide rejected request
                 </div>
+
                 {showRejected && (
                   <div className="list-item-show-hide">
                     {requestRejected.map((rejected) => (
@@ -427,6 +408,27 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                     ))}
                   </div>
                 )}
+
+                <div id="btn-modal-new">
+                  <div
+                    id="cancel-btn-new-modal"
+                    onClick={() => {
+                      setShowAddRequestModal(false);
+                      setRequestInProgress(false);
+                      setAddRequestData({
+                        name: "",
+                        year: "",
+                        info: "",
+                        token: userToken,
+                      });
+                    }}
+                  >
+                    Cancel
+                  </div>
+                  <div id="send-btn-new-modal" onClick={handleSendAddRequest}>
+                    Send Request
+                  </div>
+                </div>
               </div>
             )}
           </>
@@ -477,7 +479,8 @@ const Container = styled.div`
     border-radius: 0.4rem;
     font-size: 1rem;
     padding: 5px;
-    background-color: #01777796;
+    background-color: #87fce895;
+    color: black;
     text-align: center;
 
     &:hover {
@@ -498,7 +501,9 @@ const Container = styled.div`
     border-radius: 0.4rem;
     font-size: 1rem;
     padding: 5px;
-    background-color: #01777796;
+    background-color: #fcbc8795;
+    color: black;
+
     text-align: center;
 
     &:hover {
@@ -507,11 +512,13 @@ const Container = styled.div`
   }
 
   #send-btn-new-modal {
-    background-color: #01770197;
+    background-color: #87fc8796;
+    color: black;
   }
 
   #cancel-btn-new-modal {
-    background-color: #751d0292;
+    background-color: #fc878795;
+    color: black;
   }
 
   .input-modal-new,
