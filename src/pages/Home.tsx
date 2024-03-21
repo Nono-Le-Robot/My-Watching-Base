@@ -340,7 +340,6 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                   type="text"
                   name=""
                   placeholder=""
-                  autocomplete="off"
                   onChange={(event) => handleChangeImage(event.target.value)}
                 ></input>
                 <input
@@ -348,7 +347,6 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                   type="text"
                   name=""
                   placeholder=""
-                  autocomplete="off"
                   onChange={(event) => handleChangeName(event.target.value)}
                 ></input>
                 <div id="div-btn-change-name">
@@ -380,7 +378,6 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
 
                 <input
                   type="text"
-                  autocomplete="off"
                   placeholder="Search for a movie..."
                   value={searchTerm}
                   onChange={(event) => setSearchTerm(event.target.value)}
@@ -500,7 +497,6 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                     sufficiently precise will not be processed.
                   </p>
                   <input
-                    autocomplete="off"
                     name="name"
                     className="input-modal-new"
                     type="text"
@@ -508,7 +504,6 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                     onChange={(e) => handleChange(e)}
                   ></input>
                   <input
-                    autocomplete="off"
                     name="year"
                     className="input-modal-new"
                     type="text"
@@ -517,7 +512,6 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                   ></input>
 
                   <textarea
-                    autocomplete="off"
                     name="info"
                     className="input-area-modal-new"
                     id=""
