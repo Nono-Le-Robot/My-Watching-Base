@@ -417,19 +417,19 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                             )}
                           </div>
                           <p className="serie-name">{serie[0].displayName}</p>
-                          {userId === "65de0680cfabed396d4585cc" ||
-                            (userId === "65eed342c89e9be8f16630c2" && (
-                              <>
-                                <img
-                                  id="btn-change-name"
-                                  onClick={(event) =>
-                                    handleShowChangeNameModal(event, index)
-                                  }
-                                  src="/edit.png"
-                                  alt=""
-                                />
-                              </>
-                            ))}
+                          {/* {userId === "65de0680cfabed396d4585cc" ||
+                            (userId === "65eed342c89e9be8f16630c2" && ( */}
+                          <>
+                            <img
+                              id="btn-change-name"
+                              onClick={(event) =>
+                                handleShowChangeNameModal(event, index)
+                              }
+                              src="/edit.png"
+                              alt=""
+                            />
+                          </>
+                          {/* ))} */}
                         </div>
                       ))
                     ) : (
