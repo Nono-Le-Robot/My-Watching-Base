@@ -36,6 +36,13 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
     return 0;
   });
 
+  const statusMapping = {
+    0: "pending",
+    1: "download",
+    2: "compress",
+    3: "upload",
+  };
+
   const [data, setData] = useState([]);
   const [images, setImages] = useState({});
   const navigate = useNavigate();
@@ -45,11 +52,23 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
   const [serieList, setSerieList] = useState([]);
   const [showAddRequestModal, setShowAddRequestModal] = useState(false);
   const [requestInProgress, setRequestInProgress] = useState(false);
+  const [userToken, setUserToken] = useState("");
+  const [requestQueue, setRequestQueue] = useState(null);
+  const [requestRejected, setRequestRejected] = useState(null);
+  const [showQueue, setShowQueue] = useState(false);
+  const [showRejected, setShowRejected] = useState(false);
   const [addRequestData, setAddRequestData] = useState({
     name: "",
     year: "",
     info: "",
+    token: localStorage.getItem("iat"),
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem("iat");
+    console.log(token);
+    if (token) setUserToken(token);
+  }, []);
 
   const styleImg = {
     width: "350px",
@@ -133,7 +152,22 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
   };
 
   const handleShowAddRequestModal = () => {
-    setShowAddRequestModal(true);
+    if (userToken !== "") {
+      axios
+        .get(Config.getRequestQueue)
+        .then((response) => {
+          console.log(response.data);
+          const queue = response.data.filter((p) => p.__v !== 3);
+          setRequestQueue(queue.filter((p) => p.__v !== -2));
+          setRequestRejected(queue.filter((p) => p.__v === -2));
+          setShowAddRequestModal(true);
+        })
+        .catch((err) => {
+          console.log(err.data);
+        });
+    } else {
+      navigate("/login");
+    }
   };
 
   const handleChange = (event) => {
@@ -166,6 +200,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
             name: "",
             year: "",
             info: "",
+            token: userToken,
           });
 
           toast.success("Request sent with success !", {
@@ -183,6 +218,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
             name: "",
             year: "",
             info: "",
+            token: userToken,
           });
           toast.error("Error, please try later...", {
             position: "bottom-right",
@@ -305,6 +341,10 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
             {showAddRequestModal && (
               <div id="request-new-modal">
                 <div id="inputs-modal-new">
+                  <p style={{ color: "#f7ffaf" }}>
+                    Try to be precise as possible. Requests that are not
+                    sufficiently precise will not be processed.
+                  </p>
                   <input
                     name="name"
                     className="input-modal-new"
@@ -341,6 +381,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                         name: "",
                         year: "",
                         info: "",
+                        token: userToken,
                       });
                     }}
                   >
@@ -350,6 +391,42 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                     Send Request
                   </div>
                 </div>
+                <div
+                  id="show-queue-btn"
+                  onClick={() => setShowQueue(!showQueue)}
+                >
+                  Show/hide processing queue
+                </div>
+
+                {showQueue && (
+                  <div className="list-item-show-hide">
+                    {requestQueue.map((item) => (
+                      <li
+                        style={{ marginBottom: "0.2rem", marginTop: "0.2rem" }}
+                      >
+                        {item.name} ==== {statusMapping[item.__v] || item.__v}
+                      </li>
+                    ))}
+                  </div>
+                )}
+
+                <div
+                  id="show-rejected-btn"
+                  onClick={() => setShowRejected(!showRejected)}
+                >
+                  Show/hide rejected request
+                </div>
+                {showRejected && (
+                  <div className="list-item-show-hide">
+                    {requestRejected.map((rejected) => (
+                      <li
+                        style={{ marginBottom: "0.2rem", marginTop: "0.2rem" }}
+                      >
+                        {rejected.name} ==== {rejected.details}
+                      </li>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </>
@@ -361,6 +438,13 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
 }
 
 const Container = styled.div`
+  .list-item-show-hide {
+    margin-top: 2rem;
+    background-color: #00000053;
+    padding: 1rem;
+    border-radius: 0.4rem;
+  }
+
   #send-btn-new-modal,
   #cancel-btn-new-modal {
     margin-left: auto;
@@ -375,6 +459,48 @@ const Container = styled.div`
     border-radius: 0.4rem;
     font-size: 1rem;
     padding: 5px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  #show-queue-btn {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+    width: 250px;
+    height: 50px;
+    border: 1px solid black;
+    border-radius: 0.4rem;
+    font-size: 1rem;
+    padding: 5px;
+    background-color: #01777796;
+    text-align: center;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  #show-rejected-btn {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+    width: 250px;
+    height: 50px;
+    border: 1px solid black;
+    border-radius: 0.4rem;
+    font-size: 1rem;
+    padding: 5px;
+    background-color: #01777796;
+    text-align: center;
+
     &:hover {
       cursor: pointer;
     }

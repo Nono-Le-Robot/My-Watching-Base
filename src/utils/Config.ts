@@ -8,6 +8,8 @@ export const getAllFiles: string = `${apiUrl}/get-main-videos`
 export const getUserFiles: string = `${apiUrl}/my-files`
 export const postDataVideo: string = `${apiUrl}/post-data-video`
 export const requestNewMovieOrSerie: string = `${apiUrl}/request-new`
+export const getRequestQueue: string = `${apiUrl}/request-queue`
+
 
 
 
@@ -19,5 +21,6 @@ export default {
     getAllFiles,
     getUserFiles,
     postDataVideo,
-    requestNewMovieOrSerie
+    requestNewMovieOrSerie,
+    getRequestQueue
 }
