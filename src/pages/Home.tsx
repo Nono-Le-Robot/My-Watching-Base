@@ -549,15 +549,15 @@ const Container = styled.div`
     gap: 2rem;
   }
   #request-new-modal {
-    background-image: linear-gradient(45deg, #5f0128, rgb(129, 3, 13));
     border: 1px solid black;
     box-shadow: 0px 0px 50px #0000002f;
-
-    padding: 4rem;
+    padding: 2rem;
     width: auto;
     height: auto;
+    margin-top: 10vh;
+    overflow-y: scroll;
     position: absolute;
-    top: 55vh;
+    top: 45vh;
     left: 50vw;
     transform: translate(-50%, -50%);
     border-radius: 0.5rem;
@@ -566,6 +566,7 @@ const Container = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    background-color: #ffffff1d;
   }
   #request-movie-or-series {
     margin-left: auto;
@@ -705,11 +706,6 @@ const Container = styled.div`
     }
 
     #request-new-modal {
-      background-image: linear-gradient(
-        0deg,
-        rgba(129, 3, 13, 0),
-        rgba(129, 3, 13, 0)
-      );
       height: 90vh;
       border: none;
       box-shadow: none;
