@@ -71,7 +71,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
   }, []);
 
   const styleImg = {
-    width: "350px",
+    width: "330px",
     height: "500px",
     backgroundSize: "cover",
     backgroundPosition: "54%  50%",
@@ -83,7 +83,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
   };
 
   const styleImgLoader = {
-    width: "350px",
+    width: "330px",
     height: "500px",
     backgroundSize: "cover",
     backgroundPosition: "54%  50%",
@@ -341,7 +341,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
             {showAddRequestModal && (
               <div id="request-new-modal">
                 <div id="inputs-modal-new">
-                  <p style={{ color: "#f7ffaf" }}>
+                  <p style={{ color: "#f7ffaf", textAlign: "center" }}>
                     Try to be precise as possible. Requests that are not
                     sufficiently precise will not be processed.
                   </p>
@@ -645,7 +645,6 @@ const Container = styled.div`
     border-radius: 0.25rem;
     max-width: 310px;
     min-height: 30px;
-    width: 100%;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -707,12 +706,18 @@ const Container = styled.div`
 
     #request-new-modal {
       background-image: linear-gradient(
-        45deg,
+        0deg,
         rgba(129, 3, 13, 0),
         rgba(129, 3, 13, 0)
       );
+      height: 90vh;
       border: none;
       box-shadow: none;
+      margin-top: 10vh;
+      overflow-x: hidden;
+      padding: 1rem;
+      margin-top: 1rem;
+      /* background-color: #550101; */
     }
   }
 `;

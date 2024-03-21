@@ -186,7 +186,7 @@ const Container = styled.div`
   }
 
   .img-prev {
-    width: 360px;
+    width: 330px;
     height: auto;
     background-size: cover;
   }
@@ -223,7 +223,7 @@ const Container = styled.div`
     background-image: url("./assets/series/south-park.jpg");
     background-repeat: no-repeat;
     background-size: cover;
-    width: 350px;
+    width: 330px;
     height: 195px;
     position: absolute;
     transform: translateY(-100%);
@@ -246,7 +246,7 @@ const Container = styled.div`
   }
 
   #south-park-main {
-    width: 350px;
+    width: 330px;
     height: 350px;
     background-image: url("./assets/series/south-park.jpg");
     background-size: 180%;
