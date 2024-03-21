@@ -63,7 +63,10 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
   const [showRejected, setShowRejected] = useState(false);
   const [showFinished, setShowFinished] = useState(false);
   const [newName, setNewName] = useState("");
+  const [newImage, setNewImage] = useState("");
   const [prevName, setPrevName] = useState("");
+  const [prevImage, setPrevImage] = useState("");
+
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [userId, setUserId] = useState("");
   const [addRequestData, setAddRequestData] = useState({
@@ -191,17 +194,23 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
     console.log(index);
     event.stopPropagation();
     const allFilmsQuerySelector = document.querySelectorAll(".serie-name");
+
     setShowChangeNameModal(true);
 
     setPrevName(allFilmsQuerySelector[index].textContent);
+    setPrevImage("New image URL");
+
     setSelectedIndex(index);
   };
 
   useEffect(() => {
     if (showChangeNameModal) {
-      const input = document.getElementById("input-change-name");
-      if (input) {
-        input.setAttribute("value", prevName);
+      const inputImage = document.getElementById("input-change-image");
+      const inputName = document.getElementById("input-change-name");
+
+      if (inputName && inputImage) {
+        inputImage.setAttribute("placeholder", prevImage);
+        inputName.setAttribute("value", prevName);
       }
     }
   }, [showChangeNameModal]);
@@ -217,42 +226,47 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
     setNewName(event);
   };
 
+  const handleChangeImage = (event) => {
+    setNewImage(event);
+  };
+
   const handleClickChangeName = () => {
-    if (newName === "") {
-      //hide modal et ne rien faire
-    } else {
-      axios
-        .post(Config.changeName, {
-          prevName: prevName,
-          newName: newName,
-        })
-        .then((response) => {
-          setNewName("");
-          toast.success("Name Changed !", {
-            position: "bottom-right",
-            autoClose: 3000,
-            pauseOnHover: false,
-            draggable: false,
-            theme: "dark",
-          });
-          const allFilmsQuerySelector =
-            document.querySelectorAll(".serie-name");
-          allFilmsQuerySelector[selectedIndex].textContent = newName;
-        })
-
-        .catch((err) => {
-          console.log(err.data);
-          setNewName("");
-
-          toast.error("Error, please try later...", {
-            position: "bottom-right",
-            autoClose: 3000,
-            pauseOnHover: false,
-            draggable: false,
-            theme: "dark",
-          });
+    axios
+      .post(Config.changeName, {
+        prevName: prevName,
+        newName: newName,
+        newImage: newImage,
+      })
+      .then((response) => {
+        setNewName("");
+        toast.success("Name Changed !", {
+          position: "bottom-right",
+          autoClose: 3000,
+          pauseOnHover: false,
+          draggable: false,
+          theme: "dark",
         });
-    }
+        const allFilmsQuerySelector = document.querySelectorAll(".serie-name");
+        if (newName !== "") {
+          allFilmsQuerySelector[selectedIndex].textContent = newName;
+        }
+        if (newImage !== "") {
+          window.location.reload();
+        }
+      })
+
+      .catch((err) => {
+        console.log(err.data);
+        setNewName("");
+
+        toast.error("Error, please try later...", {
+          position: "bottom-right",
+          autoClose: 3000,
+          pauseOnHover: false,
+          draggable: false,
+          theme: "dark",
+        });
+      });
     setShowChangeNameModal(false);
   };
 
@@ -321,6 +335,14 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
           <>
             {showChangeNameModal && (
               <div id="modal-change-name">
+                <input
+                  id="input-change-image"
+                  type="text"
+                  name=""
+                  placeholder=""
+                  autocomplete="off"
+                  onChange={(event) => handleChangeImage(event.target.value)}
+                ></input>
                 <input
                   id="input-change-name"
                   type="text"
@@ -602,9 +624,9 @@ const Container = styled.div`
   #btn-change-name {
     width: 20px;
     position: relative;
-    top: -35px;
+    top: -115px;
     left: 140px;
-    padding: 1rem;
+    padding: 0.5rem;
     background-color: #ffffff68;
     border-radius: 100%;
   }
@@ -671,7 +693,8 @@ const Container = styled.div`
     margin-right: auto;
   }
 
-  #input-change-name {
+  #input-change-name,
+  #input-change-image {
     width: 290px;
     text-align: center;
     padding: 1rem;
