@@ -68,7 +68,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
   const [prevImage, setPrevImage] = useState("");
 
   const [selectedIndex, setSelectedIndex] = useState(null);
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState(localStorage.getItem("iat"));
   const [addRequestData, setAddRequestData] = useState({
     name: "",
     year: "",
@@ -419,7 +419,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                           <p className="serie-name">{serie[0].displayName}</p>
                           {/* {userId === "65de0680cfabed396d4585cc" ||
                             (userId === "65eed342c89e9be8f16630c2" && ( */}
-                          <>
+                          {userId === "65eed342c89e9be8f16630c2" && (
                             <img
                               id="btn-change-name"
                               onClick={(event) =>
@@ -428,8 +428,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                               src="/edit.png"
                               alt=""
                             />
-                          </>
-                          {/* ))} */}
+                          )}
                         </div>
                       ))
                     ) : (
@@ -462,9 +461,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                             }}
                           />
                           <p className="serie-name">{movie.displayName}</p>
-                          {/* {userId === "65de0680cfabed396d4585cc" ||
-                            (userId === "65eed342c89e9be8f16630c2" && ( */}
-                          <>
+                          {userId === "65eed342c89e9be8f16630c2" && (
                             <img
                               id="btn-change-name"
                               onClick={(event) =>
@@ -473,8 +470,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                               src="/edit.png"
                               alt=""
                             />
-                          </>
-                          {/* ))} */}
+                          )}
                         </div>
                       ))
                     ) : (
