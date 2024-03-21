@@ -549,24 +549,20 @@ const Container = styled.div`
     gap: 2rem;
   }
   #request-new-modal {
-    border: 1px solid black;
-    box-shadow: 0px 0px 50px #0000002f;
+    /* border: 1px solid black; */
+    /* box-shadow: 0px 0px 50px #0000002f; */
     padding: 2rem;
     width: auto;
     height: auto;
     margin-top: 10vh;
     overflow-y: scroll;
-    position: absolute;
-    top: 45vh;
-    left: 50vw;
-    transform: translate(-50%, -50%);
     border-radius: 0.5rem;
     z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-color: #ffffff1d;
+    /* background-color: #ffffff1d; */
   }
   #request-movie-or-series {
     margin-left: auto;
