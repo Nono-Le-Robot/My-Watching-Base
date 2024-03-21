@@ -1,5 +1,5 @@
-const apiUrl: string = "https://my-sharing-base.sanren.fr/backend"
-// const apiUrl: string = "http://localhost:5000/backend"
+// const apiUrl: string = "https://my-sharing-base.sanren.fr/backend"
+const apiUrl: string = "http://localhost:5000/backend"
 
 
 export const registerUrl: string = `${apiUrl}/api/auth/register`
@@ -9,6 +9,8 @@ export const getUserFiles: string = `${apiUrl}/my-files`
 export const postDataVideo: string = `${apiUrl}/post-data-video`
 export const requestNewMovieOrSerie: string = `${apiUrl}/request-new`
 export const getRequestQueue: string = `${apiUrl}/request-queue`
+export const changeName: string = `${apiUrl}/change-name`
+
 
 
 
@@ -22,5 +24,6 @@ export default {
     getUserFiles,
     postDataVideo,
     requestNewMovieOrSerie,
-    getRequestQueue
+    getRequestQueue,
+    changeName
 }

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { SyncLoader } from "react-spinners";
 import groupBy from "lodash.groupby";
 import watchedLogo from "../assets/watched.png";
@@ -21,7 +21,6 @@ type HomeProps = {
 };
 
 export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
-  const userId = localStorage.getItem("userId");
   const [searchTerm, setSearchTerm] = useState("");
 
   groupedByMovies.sort(function compare(a, b) {
@@ -37,11 +36,13 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
   });
 
   const statusMapping = {
-    0: "pending",
-    1: "download",
-    2: "compress",
-    3: "upload",
+    0: "Pending",
+    1: "Download",
+    2: "Compress",
+    3: "Upload",
   };
+
+  const nameRef = useRef();
 
   const [data, setData] = useState([]);
   const [images, setImages] = useState({});
@@ -51,12 +52,20 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
   const [movieList, setMovieList] = useState([]);
   const [serieList, setSerieList] = useState([]);
   const [showAddRequestModal, setShowAddRequestModal] = useState(false);
+  const [showChangeNameModal, setShowChangeNameModal] = useState(false);
+
   const [requestInProgress, setRequestInProgress] = useState(false);
   const [userToken, setUserToken] = useState("");
   const [requestQueue, setRequestQueue] = useState(null);
   const [requestRejected, setRequestRejected] = useState(null);
+  const [requestFinished, setRequestFinished] = useState(null);
   const [showQueue, setShowQueue] = useState(false);
   const [showRejected, setShowRejected] = useState(false);
+  const [showFinished, setShowFinished] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [prevName, setPrevName] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [userId, setUserId] = useState("");
   const [addRequestData, setAddRequestData] = useState({
     name: "",
     year: "",
@@ -66,8 +75,13 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
 
   useEffect(() => {
     const token = localStorage.getItem("iat");
+    const userId = localStorage.getItem("userId");
+
     console.log(token);
-    if (token) setUserToken(token);
+    if (token) {
+      setUserToken(token);
+      setUserId(userId);
+    }
   }, []);
 
   const styleImg = {
@@ -157,9 +171,12 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
         .get(Config.getRequestQueue)
         .then((response) => {
           console.log(response.data);
-          const queue = response.data.filter((p) => p.__v !== 3);
+          const queue = response.data.filter((p) => p.__v !== 4);
+          const finished = response.data.filter((p) => p.__v === 4);
           setRequestQueue(queue.filter((p) => p.__v !== -2));
           setRequestRejected(queue.filter((p) => p.__v === -2));
+          setRequestFinished(finished);
+
           setShowAddRequestModal(true);
         })
         .catch((err) => {
@@ -170,11 +187,73 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
     }
   };
 
+  const handleShowChangeNameModal = (event, index) => {
+    console.log(index);
+    event.stopPropagation();
+    const allFilmsQuerySelector = document.querySelectorAll(".serie-name");
+    setShowChangeNameModal(true);
+
+    setPrevName(allFilmsQuerySelector[index].textContent);
+    setSelectedIndex(index);
+  };
+
+  useEffect(() => {
+    if (showChangeNameModal) {
+      const input = document.getElementById("input-change-name");
+      if (input) {
+        input.setAttribute("value", prevName);
+      }
+    }
+  }, [showChangeNameModal]);
+
   const handleChange = (event) => {
     setAddRequestData({
       ...addRequestData,
       [event.target.name]: event.target.value,
     });
+  };
+
+  const handleChangeName = (event) => {
+    setNewName(event);
+  };
+
+  const handleClickChangeName = () => {
+    if (newName === "") {
+      //hide modal et ne rien faire
+    } else {
+      axios
+        .post(Config.changeName, {
+          prevName: prevName,
+          newName: newName,
+        })
+        .then((response) => {
+          setNewName("");
+          toast.success("Name Changed !", {
+            position: "bottom-right",
+            autoClose: 3000,
+            pauseOnHover: false,
+            draggable: false,
+            theme: "dark",
+          });
+          const allFilmsQuerySelector =
+            document.querySelectorAll(".serie-name");
+          allFilmsQuerySelector[selectedIndex].textContent = newName;
+        })
+
+        .catch((err) => {
+          console.log(err.data);
+          setNewName("");
+
+          toast.error("Error, please try later...", {
+            position: "bottom-right",
+            autoClose: 3000,
+            pauseOnHover: false,
+            draggable: false,
+            theme: "dark",
+          });
+        });
+    }
+    setShowChangeNameModal(false);
   };
 
   const handleSendAddRequest = () => {
@@ -240,6 +319,32 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
           </div>
         ) : (
           <>
+            {showChangeNameModal && (
+              <div id="modal-change-name">
+                <input
+                  id="input-change-name"
+                  type="text"
+                  name=""
+                  placeholder=""
+                  autocomplete="off"
+                  onChange={(event) => handleChangeName(event.target.value)}
+                ></input>
+                <div id="div-btn-change-name">
+                  <button
+                    id="cancel-new-name-btn"
+                    onClick={() => setShowChangeNameModal(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    id="save-new-name-btn"
+                    onClick={handleClickChangeName}
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            )}
             {!showAddRequestModal && (
               <>
                 <div id="nav">
@@ -253,6 +358,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
 
                 <input
                   type="text"
+                  autocomplete="off"
                   placeholder="Search for a movie..."
                   value={searchTerm}
                   onChange={(event) => setSearchTerm(event.target.value)}
@@ -262,10 +368,10 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                 {!moviesSelected ? (
                   <div id="all-series-films">
                     {groupedBySerie ? (
-                      serieList.map((serie) => (
+                      serieList.map((serie, index) => (
                         <div
                           style={{ cursor: "pointer" }}
-                          key={serie[0].serieName}
+                          key={serie[0].name}
                           onClick={() =>
                             navigate(`/serie/${serie[0].formatedName}`)
                           }
@@ -289,6 +395,19 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                             )}
                           </div>
                           <p className="serie-name">{serie[0].displayName}</p>
+                          {userId === "65de0680cfabed396d4585cc" ||
+                            (userId === "65eed342c89e9be8f16630c2" && (
+                              <>
+                                <img
+                                  id="btn-change-name"
+                                  onClick={(event) =>
+                                    handleShowChangeNameModal(event, index)
+                                  }
+                                  src="/edit.png"
+                                  alt=""
+                                />
+                              </>
+                            ))}
                         </div>
                       ))
                     ) : (
@@ -298,7 +417,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                 ) : (
                   <div id="all-series-films">
                     {groupedByMovies ? (
-                      movieList.map((movie) => (
+                      movieList.map((movie, index) => (
                         <div
                           style={{ cursor: "pointer" }}
                           key={movie.originalName}
@@ -321,6 +440,19 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                             }}
                           />
                           <p className="serie-name">{movie.displayName}</p>
+                          {userId === "65de0680cfabed396d4585cc" ||
+                            (userId === "65eed342c89e9be8f16630c2" && (
+                              <>
+                                <img
+                                  id="btn-change-name"
+                                  onClick={(event) =>
+                                    handleShowChangeNameModal(event, index)
+                                  }
+                                  src="/edit.png"
+                                  alt=""
+                                />
+                              </>
+                            ))}
                         </div>
                       ))
                     ) : (
@@ -346,6 +478,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                     sufficiently precise will not be processed.
                   </p>
                   <input
+                    autocomplete="off"
                     name="name"
                     className="input-modal-new"
                     type="text"
@@ -353,6 +486,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                     onChange={(e) => handleChange(e)}
                   ></input>
                   <input
+                    autocomplete="off"
                     name="year"
                     className="input-modal-new"
                     type="text"
@@ -361,6 +495,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                   ></input>
 
                   <textarea
+                    autocomplete="off"
                     name="info"
                     className="input-area-modal-new"
                     id=""
@@ -380,15 +515,39 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
 
                 {showQueue && (
                   <div className="list-item-show-hide">
-                    {requestQueue.map((item) => (
+                    {requestQueue
+                      .filter((item) => item.processed) // Filtre les éléments traités
+                      .map((item) => (
+                        <li
+                          style={{
+                            marginBottom: "0.7rem",
+                            marginTop: "0.7rem",
+                          }}
+                        >
+                          {item.name} ==== {statusMapping[item.__v] || item.__v}
+                        </li>
+                      ))}
+                  </div>
+                )}
+
+                {/* <div
+                  id="show-finished-btn"
+                  onClick={() => setShowFinished(!showFinished)}
+                >
+                  Show/hide finished request
+                </div>
+
+                {showFinished && (
+                  <div className="list-item-show-hide">
+                    {requestFinished.map((finished) => (
                       <li
                         style={{ marginBottom: "0.7rem", marginTop: "0.7rem" }}
                       >
-                        {item.name} ==== {statusMapping[item.__v] || item.__v}
+                        {finished.name}
                       </li>
                     ))}
                   </div>
-                )}
+                )} */}
 
                 <div
                   id="show-rejected-btn"
@@ -440,9 +599,100 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
 }
 
 const Container = styled.div`
+  #btn-change-name {
+    width: 20px;
+    position: relative;
+    top: -35px;
+    left: 140px;
+    padding: 1rem;
+    background-color: #ffffff68;
+    border-radius: 100%;
+  }
+  #save-new-name-btn {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 50px;
+    border: 1px solid black;
+    border-radius: 0.4rem;
+    font-size: 1rem;
+    padding: 5px;
+    background-color: #f0fc8794;
+    color: black;
+
+    text-align: center;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  #cancel-new-name-btn {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 50px;
+    border: 1px solid black;
+    border-radius: 0.4rem;
+    font-size: 1rem;
+    padding: 5px;
+    background-color: #fc878793;
+    color: black;
+
+    text-align: center;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  #modal-change-name {
+    padding: 2rem;
+    border-radius: 0.5rem;
+    position: fixed;
+    left: 50vw;
+    top: 50vh;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: #000000f4;
+    width: 330px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #input-change-name {
+    width: 290px;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 0.4rem;
+    border: 1px solid black;
+    color: white;
+    background-color: #5858586e;
+    &::placeholder {
+      color: #ffffff;
+      opacity: 1; /* Firefox */
+    }
+  }
+  #div-btn-change-name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
   .list-item-show-hide {
     margin-top: 2rem;
-    background-color: #00000053;
+    background-color: #00000094;
     padding: 1rem;
     border-radius: 0.4rem;
   }
@@ -461,6 +711,8 @@ const Container = styled.div`
     border-radius: 0.4rem;
     font-size: 1rem;
     padding: 5px;
+    font-weight: bold;
+
     &:hover {
       cursor: pointer;
     }
@@ -479,8 +731,32 @@ const Container = styled.div`
     border-radius: 0.4rem;
     font-size: 1rem;
     padding: 5px;
-    background-color: #87fce895;
+    background-color: #00000094;
+    color: #ffffff;
+    text-align: center;
+    font-weight: bold;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  #show-finished-btn {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+    width: 250px;
+    height: 50px;
+    border: 1px solid black;
+    border-radius: 0.4rem;
+    font-size: 1rem;
+    padding: 5px;
+    background-color: #f0fc8794;
     color: black;
+
     text-align: center;
 
     &:hover {
@@ -501,8 +777,9 @@ const Container = styled.div`
     border-radius: 0.4rem;
     font-size: 1rem;
     padding: 5px;
-    background-color: #fcbc8795;
-    color: black;
+    background-color: #00000094;
+    color: #ffffff;
+    font-weight: bold;
 
     text-align: center;
 
@@ -554,7 +831,7 @@ const Container = styled.div`
     padding: 2rem;
     width: auto;
     height: auto;
-    margin-top: 10vh;
+    margin-top: 2rem;
     /* overflow-y: scroll; */
     border-radius: 0.5rem;
     z-index: 2;
@@ -600,7 +877,7 @@ const Container = styled.div`
   .watched-logo {
     width: 50px;
     position: absolute;
-    transform: translate(295px, 5px);
+    transform: translate(275px, 5px);
     z-index: 999;
   }
 
@@ -640,7 +917,7 @@ const Container = styled.div`
     background-color: #0000006f;
     padding: 0.5rem 0rem;
     border-radius: 0.25rem;
-    max-width: 310px;
+    max-width: 290px;
     min-height: 30px;
     overflow: hidden;
     display: flex;
