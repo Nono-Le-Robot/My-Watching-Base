@@ -515,9 +515,9 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                                 src="/edit.png"
                                 alt=""
                               />
-                              <p style={{ textAlign: "center" }}>
+                              {/* <p style={{ textAlign: "center" }}>
                                 {serie[0].gender}
-                              </p>
+                              </p> */}
                             </>
                           )}
                         </div>
