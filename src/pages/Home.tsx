@@ -64,8 +64,11 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
   const [showFinished, setShowFinished] = useState(false);
   const [newName, setNewName] = useState("");
   const [newImage, setNewImage] = useState("");
+  const [genre, setGenre] = useState("");
+
   const [prevName, setPrevName] = useState("");
   const [prevImage, setPrevImage] = useState("");
+  const [prevGenre, setPrevGenre] = useState("");
 
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [userId, setUserId] = useState(localStorage.getItem("iat"));
@@ -199,6 +202,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
 
     setPrevName(allFilmsQuerySelector[index].textContent);
     setPrevImage("New image URL");
+    setPrevGenre("Genre");
 
     setSelectedIndex(index);
   };
@@ -207,10 +211,12 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
     if (showChangeNameModal) {
       const inputImage = document.getElementById("input-change-image");
       const inputName = document.getElementById("input-change-name");
+      const inputGenre = document.getElementById("input-change-genre");
 
-      if (inputName && inputImage) {
-        inputImage.setAttribute("placeholder", prevImage);
-        inputName.setAttribute("value", prevName);
+      if (inputName && inputImage && inputGenre) {
+        inputImage.setAttribute("placeholder", "New Image");
+        inputGenre.setAttribute("placeholder", "New Genre");
+        inputName.setAttribute("placeholder", "New Name");
       }
     }
   }, [showChangeNameModal]);
@@ -225,7 +231,9 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
   const handleChangeName = (event) => {
     setNewName(event);
   };
-
+  const handleChangeGenre = (event) => {
+    setGenre(event);
+  };
   const handleChangeImage = (event) => {
     setNewImage(event);
   };
@@ -236,6 +244,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
         prevName: prevName,
         newName: newName,
         newImage: newImage,
+        genre: genre,
       })
       .then((response) => {
         setNewName("");
@@ -351,6 +360,14 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                   placeholder=""
                   onChange={(event) => handleChangeName(event.target.value)}
                 ></input>
+                <input
+                  autoComplete="nope"
+                  id="input-change-genre"
+                  type="text"
+                  name=""
+                  placeholder=""
+                  onChange={(event) => handleChangeGenre(event.target.value)}
+                ></input>
                 <div id="div-btn-change-name">
                   <button
                     id="cancel-new-name-btn"
@@ -386,6 +403,74 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                   onChange={(event) => setSearchTerm(event.target.value)}
                   className="input-search"
                 />
+                {/* <label htmlFor="pet-select">:</label> */}
+
+                <select
+                  onChange={(event) => {
+                    let selectedGenre = "";
+                    selectedGenre = event.target.value;
+                    let filteredMoviesByGenre = groupedByMovies.filter(
+                      (movie) => movie.genre.includes(selectedGenre)
+                    );
+                    setMovieList(filteredMoviesByGenre); // Mettez à jour l'état ou la variable contenant la liste des films filtrés
+                    let filteredSeriesByGenre = groupedBySerie.filter((serie) =>
+                      serie[0].genre.includes(selectedGenre)
+                    );
+                    setSerieList(filteredSeriesByGenre); // Mettez à jour l'état ou la variable contenant la liste des films filtrés
+                  }}
+                  name="genres"
+                  className="input-search"
+                  id="genre-select"
+                >
+                  <option value="">-- Select Genre --</option>
+                  <option value="Action">Action</option>
+                  <option value="Adventure">Adventure</option>
+                  <option value="Animation">Animation</option>
+                  <option value="Comedy">Comedy</option>
+                  <option value="Crime">Crime</option>
+                  <option value="Documentary">Documentary</option>
+                  <option value="Drama">Drama</option>
+                  <option value="Family">Family</option>
+                  <option value="Fantasy">Fantasy</option>
+                  <option value="History">History</option>
+                  <option value="Horror">Horror</option>
+                  <option value="Music">Music</option>
+                  <option value="Mystery">Mystery</option>
+                  <option value="Romance">Romance</option>
+                  <option value="Science Fiction">Science Fiction</option>
+                  <option value="Thriller">Thriller</option>
+                  <option value="War">War</option>
+                  <option value="Western">Western</option>
+                </select>
+
+                {/* <div id="hide-already-played">
+                  <input
+                    onChange={(event) => {
+                      let originalMovieList = movieList;
+                      if (event.target.checked) {
+                        let movieTemp = [];
+
+                        console.log(serieList[0][0].watchedBy);
+                        movieList.forEach((movie) => {
+                          if (
+                            !movie.watchedBy.includes(
+                              "65e99fdbd10089db3b8f20a7"
+                            )
+                          ) {
+                            movieTemp.push(movie);
+                          }
+                        });
+                        setMovieList(movieTemp);
+                      } else {
+                        setMovieList(groupedByMovies);
+                      }
+                    }}
+                    type="checkbox"
+                    name=""
+                    id="check"
+                  />
+                  <label htmlFor="check">Hide already played</label>
+                </div> */}
 
                 {!moviesSelected ? (
                   <div id="all-series-films">
@@ -420,14 +505,19 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                           {/* {userId === "65de0680cfabed396d4585cc" ||
                             (userId === "65eed342c89e9be8f16630c2" && ( */}
                           {userId === "65eed342c89e9be8f16630c2" && (
-                            <img
-                              id="btn-change-name"
-                              onClick={(event) =>
-                                handleShowChangeNameModal(event, index)
-                              }
-                              src="/edit.png"
-                              alt=""
-                            />
+                            <>
+                              <img
+                                id="btn-change-name"
+                                onClick={(event) =>
+                                  handleShowChangeNameModal(event, index)
+                                }
+                                src="/edit.png"
+                                alt=""
+                              />
+                              <p style={{ textAlign: "center" }}>
+                                {serie[0].genre}
+                              </p>
+                            </>
                           )}
                         </div>
                       ))
@@ -462,14 +552,19 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                           />
                           <p className="serie-name">{movie.displayName}</p>
                           {userId === "65eed342c89e9be8f16630c2" && (
-                            <img
-                              id="btn-change-name"
-                              onClick={(event) =>
-                                handleShowChangeNameModal(event, index)
-                              }
-                              src="/edit.png"
-                              alt=""
-                            />
+                            <>
+                              <img
+                                id="btn-change-name"
+                                onClick={(event) =>
+                                  handleShowChangeNameModal(event, index)
+                                }
+                                src="/edit.png"
+                                alt=""
+                              />
+                              {/* <p style={{ textAlign: "center" }}>
+                                {movie.genre}
+                              </p> */}
+                            </>
                           )}
                         </div>
                       ))
@@ -617,6 +712,23 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
 }
 
 const Container = styled.div`
+  #hide-already-played {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  label {
+    cursor: pointer;
+  }
+
+  input[type="checkbox"] {
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+  }
+
   #btn-change-name {
     width: 20px;
     position: relative;
@@ -682,7 +794,8 @@ const Container = styled.div`
     justify-content: center;
     flex-direction: column;
     gap: 1rem;
-    background-color: #000000f4;
+    background-color: #000000;
+    z-index: 99;
     width: 330px;
     height: auto;
     margin-left: auto;
@@ -690,7 +803,8 @@ const Container = styled.div`
   }
 
   #input-change-name,
-  #input-change-image {
+  #input-change-image,
+  #input-change-genre {
     width: 290px;
     text-align: center;
     padding: 1rem;
@@ -880,7 +994,8 @@ const Container = styled.div`
     }
   }
 
-  .input-search {
+  .input-search,
+  .input-genre {
     width: 250px;
     display: flex;
     align-items: center;
