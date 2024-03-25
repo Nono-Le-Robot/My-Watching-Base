@@ -64,11 +64,11 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
   const [showFinished, setShowFinished] = useState(false);
   const [newName, setNewName] = useState("");
   const [newImage, setNewImage] = useState("");
-  const [genre, setGenre] = useState("");
+  const [gender, setGender] = useState("");
 
   const [prevName, setPrevName] = useState("");
   const [prevImage, setPrevImage] = useState("");
-  const [prevGenre, setPrevGenre] = useState("");
+  const [prevGender, setPrevGender] = useState("");
 
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [userId, setUserId] = useState(localStorage.getItem("iat"));
@@ -202,7 +202,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
 
     setPrevName(allFilmsQuerySelector[index].textContent);
     setPrevImage("New image URL");
-    setPrevGenre("Genre");
+    setPrevGender("Gender");
 
     setSelectedIndex(index);
   };
@@ -211,11 +211,11 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
     if (showChangeNameModal) {
       const inputImage = document.getElementById("input-change-image");
       const inputName = document.getElementById("input-change-name");
-      const inputGenre = document.getElementById("input-change-genre");
+      const inputGender = document.getElementById("input-change-gender");
 
-      if (inputName && inputImage && inputGenre) {
+      if (inputName && inputImage && inputGender) {
         inputImage.setAttribute("placeholder", "New Image");
-        inputGenre.setAttribute("placeholder", "New Genre");
+        inputGender.setAttribute("placeholder", "New Gender");
         inputName.setAttribute("placeholder", "New Name");
       }
     }
@@ -231,8 +231,8 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
   const handleChangeName = (event) => {
     setNewName(event);
   };
-  const handleChangeGenre = (event) => {
-    setGenre(event);
+  const handleChangeGender = (event) => {
+    setGender(event);
   };
   const handleChangeImage = (event) => {
     setNewImage(event);
@@ -244,7 +244,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
         prevName: prevName,
         newName: newName,
         newImage: newImage,
-        genre: genre,
+        gender: gender,
       })
       .then((response) => {
         setNewName("");
@@ -362,11 +362,11 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                 ></input>
                 <input
                   autoComplete="nope"
-                  id="input-change-genre"
+                  id="input-change-gender"
                   type="text"
                   name=""
                   placeholder=""
-                  onChange={(event) => handleChangeGenre(event.target.value)}
+                  onChange={(event) => handleChangeGender(event.target.value)}
                 ></input>
                 <div id="div-btn-change-name">
                   <button
@@ -407,20 +407,20 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
 
                 <select
                   onChange={(event) => {
-                    let selectedGenre = "";
-                    selectedGenre = event.target.value;
-                    let filteredMoviesByGenre = groupedByMovies.filter(
-                      (movie) => movie.genre.includes(selectedGenre)
+                    let selectedGender = "";
+                    selectedGender = event.target.value;
+                    let filteredMoviesByGender = groupedByMovies.filter(
+                      (movie) => movie.gender.includes(selectedGender)
                     );
-                    setMovieList(filteredMoviesByGenre); // Mettez à jour l'état ou la variable contenant la liste des films filtrés
-                    let filteredSeriesByGenre = groupedBySerie.filter((serie) =>
-                      serie[0].genre.includes(selectedGenre)
+                    setMovieList(filteredMoviesByGender); // Mettez à jour l'état ou la variable contenant la liste des films filtrés
+                    let filteredSeriesByGender = groupedBySerie.filter(
+                      (serie) => serie[0].gender.includes(selectedGender)
                     );
-                    setSerieList(filteredSeriesByGenre); // Mettez à jour l'état ou la variable contenant la liste des films filtrés
+                    setSerieList(filteredSeriesByGender); // Mettez à jour l'état ou la variable contenant la liste des films filtrés
                   }}
-                  name="genres"
+                  name="genders"
                   className="input-search"
-                  id="genre-select"
+                  id="gender-select"
                 >
                   <option value="">-- Select Genre --</option>
                   <option value="Action">Action</option>
@@ -434,6 +434,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                   <option value="Fantasy">Fantasy</option>
                   <option value="History">History</option>
                   <option value="Horror">Horror</option>
+                  <option value="Movie">Movie</option>
                   <option value="Music">Music</option>
                   <option value="Mystery">Mystery</option>
                   <option value="Romance">Romance</option>
@@ -515,7 +516,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                                 alt=""
                               />
                               <p style={{ textAlign: "center" }}>
-                                {serie[0].genre}
+                                {serie[0].gender}
                               </p>
                             </>
                           )}
@@ -562,7 +563,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                                 alt=""
                               />
                               {/* <p style={{ textAlign: "center" }}>
-                                {movie.genre}
+                                {movie.gender}
                               </p> */}
                             </>
                           )}
@@ -804,7 +805,7 @@ const Container = styled.div`
 
   #input-change-name,
   #input-change-image,
-  #input-change-genre {
+  #input-change-gender {
     width: 290px;
     text-align: center;
     padding: 1rem;
@@ -995,7 +996,7 @@ const Container = styled.div`
   }
 
   .input-search,
-  .input-genre {
+  .input-gender {
     width: 250px;
     display: flex;
     align-items: center;
