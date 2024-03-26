@@ -403,9 +403,9 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                   onChange={(event) => setSearchTerm(event.target.value)}
                   className="input-search"
                 />
-                {/* <label htmlFor="pet-select">:</label> */}
+                <label htmlFor="pet-select">:</label>
 
-                {/* <select
+                <select
                   onChange={(event) => {
                     let selectedGender = "";
                     selectedGender = event.target.value;
@@ -442,7 +442,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                   <option value="Thriller">Thriller</option>
                   <option value="War">War</option>
                   <option value="Western">Western</option>
-                </select> */}
+                </select>
 
                 {/* <div id="hide-already-played">
                   <input
@@ -515,9 +515,9 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                                 src="/edit.png"
                                 alt=""
                               />
-                              {/* <p style={{ textAlign: "center" }}>
+                              <p style={{ textAlign: "center" }}>
                                 {serie[0].gender}
-                              </p> */}
+                              </p>
                             </>
                           )}
                         </div>
@@ -562,9 +562,9 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                                 src="/edit.png"
                                 alt=""
                               />
-                              {/* <p style={{ textAlign: "center" }}>
+                              <p style={{ textAlign: "center" }}>
                                 {movie.gender}
-                              </p> */}
+                              </p>
                             </>
                           )}
                         </div>
