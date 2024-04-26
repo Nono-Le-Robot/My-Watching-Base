@@ -107,21 +107,6 @@ export default function Movies({ groupedByMovies }: MovieProps) {
                                 borderRadius: "0.4rem",
                                 overflow: "hidden",
                             }}
-                            config={{
-                                file: {
-                                    attributes: {
-                                        crossOrigin: "true",
-                                    },
-                                    tracks: [
-                                        {
-                                            kind: "subtitles",
-                                            src: "URL_DU_FICHIER_DE_SOUS_TITRES", // Remplacez par l'URL de votre fichier de sous-titres
-                                            srcLang: "fr", // Langue des sous-titres
-                                            default: true, // Indique si les sous-titres sont activés par défaut
-                                        },
-                                    ],
-                                },
-                            }}
                         />
                         <p className="episode">
                             {filteredMovies[0]
