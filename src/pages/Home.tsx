@@ -436,7 +436,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                                 />
                                 <label htmlFor="pet-select">:</label>
 
-                                <select
+                                {/* <select
                                     onChange={(event) => {
                                         let selectedGender = "";
                                         selectedGender = event.target.value;
@@ -483,7 +483,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                                     <option value="Thriller">Thriller</option>
                                     <option value="War">War</option>
                                     <option value="Western">Western</option>
-                                </select>
+                                </select> */}
 
                                 {/* <div id="hide-already-played">
                   <input
