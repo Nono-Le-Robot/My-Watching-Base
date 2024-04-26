@@ -164,7 +164,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
     }, [groupedBySerie, groupedByMovies]);
 
     useEffect(() => {
-        const logoHome = document.getElementById("home-logo");
+        const logoHome = document.getElementById("left-header");
         if (showAddRequestModal) {
             logoHome.addEventListener("click", () => {
                 setShowAddRequestModal(false);
