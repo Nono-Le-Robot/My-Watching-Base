@@ -434,7 +434,15 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                                     }
                                     className="input-search"
                                 />
-                                <label htmlFor="pet-select">:</label>
+                                {!showAddRequestModal && (
+                                    <div
+                                        id="request-movie-or-series"
+                                        onClick={handleShowAddRequestModal}
+                                    >
+                                        Request Movie / Serie
+                                    </div>
+                                )}
+                                {/* <label htmlFor="pet-select">:</label> */}
 
                                 {/* <select
                                     onChange={(event) => {
@@ -667,14 +675,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                                 )}
                             </>
                         )}
-                        {!showAddRequestModal && (
-                            <div
-                                id="request-movie-or-series"
-                                onClick={handleShowAddRequestModal}
-                            >
-                                Request Movie / Serie
-                            </div>
-                        )}
+
                         {showAddRequestModal && (
                             <div id="request-new-modal">
                                 <div id="inputs-modal-new">
