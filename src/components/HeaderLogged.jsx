@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import logo from '../assets/logo.png'
 
-export default function Header({setIsLogged}) {
+export default function Header({ setIsLogged }) {
     const navigate = useNavigate()
 
     const logout = () => {
@@ -20,7 +20,7 @@ export default function Header({setIsLogged}) {
             <div id='header'>
                 <div id='left-header'>
                     <img onClick={() => navigate('/')} src={logo} id='logo' alt="" />
-                    <h1 onClick={() => navigate('/')} >My Watching Base</h1>
+                    <h1 onClick={() => navigate('/')} id='home-logo'>My Watching Base</h1>
                 </div>
                 <div id='right-header'>
                     <p onClick={() => navigate('/storage')}>Storage</p>
