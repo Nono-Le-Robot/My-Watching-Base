@@ -442,7 +442,7 @@ export default function Home({ groupedBySerie, groupedByMovies }: HomeProps) {
                                         Request Movie / Serie
                                     </div>
                                 )}
-                                {/* <label htmlFor="pet-select">:</label> */}
+                                <label htmlFor="pet-select">:</label>
 
                                 {/* <select
                                     onChange={(event) => {
@@ -1180,7 +1180,7 @@ const Container = styled.div`
     #all-series-films {
         margin-bottom: 2rem;
         padding: 1rem;
-        padding-top: 4rem;
+        padding-top: 0;
         display: flex;
         align-items: center;
         justify-content: space-evenly;
