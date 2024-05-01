@@ -51,13 +51,20 @@ export default function Serie({ groupedBySeasons }: SerieProps) {
               }}
               key={season[0].season}
               onClick={() =>
-                navigate(`/serie/${serieName}/${season[0].season}`)
+                navigate(
+                  `/serie/${serieName}/${season[0].season}`
+                )
               }
             >
               Season {season[0].season}
-              {userId && numberWatchedEpisodes === season.length && (
-                <img className="watched-logo" src={watchedLogo} alt="" />
-              )}
+              {userId &&
+                numberWatchedEpisodes === season.length && (
+                  <img
+                    className="watched-logo"
+                    src={watchedLogo}
+                    alt=""
+                  />
+                )}
             </p>
           );
         })}
@@ -68,91 +75,91 @@ export default function Serie({ groupedBySeasons }: SerieProps) {
 
 // CSS
 const Container = styled.div`
-  .watched-logo {
-    width: 40px;
-    position: absolute;
-    transform: translate(20px, -7px);
-    z-index: 999;
-  }
-
-  p {
-    cursor: pointer;
-    transition: 0.1s;
-    &:hover {
-      transition: 0.1s;
-      font-weight: bold;
+    .watched-logo {
+        width: 40px;
+        position: absolute;
+        transform: translate(20px, -7px);
+        z-index: 999;
     }
-  }
-
-  .episode {
-    color: #000000;
-    font-weight: bold;
-    position: absolute;
-    transform: translate(35px, -55px);
-    background-color: #ffffffb9;
-    padding: 0.5rem 1rem;
-    border-radius: 0.4rem;
-  }
-
-  #all-videos {
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    margin-bottom: 6rem;
-    margin-top: 4rem;
-    gap: 5rem;
-  }
-  #bck {
-    background-image: url("./assets/series/south-park.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 330px;
-    height: 195px;
-    position: absolute;
-    transform: translateY(-100%);
-    z-index: -99;
-    border-radius: 0.3rem;
-  }
-
-  #all-seasons {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    /* flex-wrap: wrap; */
-    height: 82vh;
-    gap: 1rem;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
 
     p {
-      color: white;
+        cursor: pointer;
+        transition: 0.1s;
+        &:hover {
+            transition: 0.1s;
+            font-weight: bold;
+        }
     }
-  }
 
-  #south-park-main {
-    width: 330px;
-    height: 350px;
-    background-image: url("./assets/series/south-park.jpg");
-    background-size: 180%;
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: 0.3rem;
-    cursor: pointer;
-  }
-  .videos {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  .video {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-  }
+    .episode {
+        color: #000000;
+        font-weight: bold;
+        position: absolute;
+        transform: translate(35px, -55px);
+        background-color: #ffffffb9;
+        padding: 0.5rem 1rem;
+        border-radius: 0.4rem;
+    }
+
+    #all-videos {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin-bottom: 6rem;
+        margin-top: 4rem;
+        gap: 5rem;
+    }
+    #bck {
+        background-image: url("./assets/series/south-park.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 330px;
+        height: 195px;
+        position: absolute;
+        transform: translateY(-100%);
+        z-index: -99;
+        border-radius: 0.3rem;
+    }
+
+    #all-seasons {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        /* flex-wrap: wrap; */
+        height: auto;
+        gap: 1rem;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+
+        p {
+            color: white;
+        }
+    }
+
+    #south-park-main {
+        width: 330px;
+        height: 350px;
+        background-image: url("./assets/series/south-park.jpg");
+        background-size: 180%;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 0.3rem;
+        cursor: pointer;
+    }
+    .videos {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    .video {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
 `;
